@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
-import 'package:project/domain/models/fact_model.dart';
+import 'package:project/models/fact_model.dart';
 
 Future<String> _loadFactAsset() async {
   return await rootBundle.loadString('assets/facts.json');

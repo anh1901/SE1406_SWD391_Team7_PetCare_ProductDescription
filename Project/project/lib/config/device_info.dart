@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:device_info/device_info.dart';
 import 'package:project/caches/shared_storage.dart';
-import 'package:project/domain/models/divice_info_model.dart';
+import 'package:project/models/divice_info_model.dart';
 
 class DeviceInfo {
   static Future<void> initialezed() async {

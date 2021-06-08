@@ -4,7 +4,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:project/caches/shared_constant.dart';
 import 'package:project/caches/shared_util.dart';
 import 'package:project/main.dart';
-import 'package:project/domain/models/pet_model.dart';
+import 'package:project/models/pet_model.dart';
 import 'package:project/redux/redux_state.dart';
 import 'package:project/services/authentication_service.dart';
 import 'package:project/utils/function_util.dart';

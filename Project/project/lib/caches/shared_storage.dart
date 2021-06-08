@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:project/caches/shared_constant.dart';
 import 'package:project/caches/shared_util.dart';
-import 'package:project/domain/models/config_info_model.dart';
-import 'package:project/domain/models/divice_info_model.dart';
-import 'package:project/domain/models/pet_model.dart';
+import 'package:project/models/config_info_model.dart';
+import 'package:project/models/divice_info_model.dart';
+import 'package:project/models/pet_model.dart';
 
 import 'data_result.dart';
 

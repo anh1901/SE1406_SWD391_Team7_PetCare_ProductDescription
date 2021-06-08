@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:project/domain/models/config_info_model.dart';
-import 'package:project/domain/models/divice_info_model.dart';
+import 'package:project/models/config_info_model.dart';
+import 'package:project/models/divice_info_model.dart';
 import 'package:project/redux/reducer/locale_reducer.dart';
 import 'package:project/redux/reducer/theme_reducer.dart';
 import 'package:project/redux/redux_index.dart';
 
-import '../domain/models/pet_model.dart';
+import '../models/pet_model.dart';
 
 class ReduxState {
   ThemeData themeData;

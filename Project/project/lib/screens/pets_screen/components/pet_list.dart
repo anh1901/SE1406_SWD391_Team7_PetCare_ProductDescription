@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image/network.dart';
-import 'package:project/domain/models/pet_model.dart';
+import 'package:project/models/pet_model.dart';
 import 'package:project/widgets/app_size.dart';
 import 'package:project/widgets/commons.dart';
 import 'package:project/widgets/custom_text.dart';

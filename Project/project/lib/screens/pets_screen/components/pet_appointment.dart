@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:project/domain/models/appointment_model.dart';
+import 'package:project/models/appointment_model.dart';
 import 'package:project/widgets/app_size.dart';
 import 'package:project/widgets/commons.dart';
 import 'package:project/widgets/custom_text.dart';

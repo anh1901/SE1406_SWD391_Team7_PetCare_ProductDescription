@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
-import 'package:project/domain/models/post_model.dart';
+import 'package:project/models/post_model.dart';
 
 Future<String> _loadPostAsset() async {
   return await rootBundle.loadString('assets/posts.json');

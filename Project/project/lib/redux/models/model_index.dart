@@ -1,1 +1,1 @@
-export 'package:project/domain/models/config_info_model.dart';
+export 'package:project/models/config_info_model.dart';

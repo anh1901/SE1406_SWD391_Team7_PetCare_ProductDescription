@@ -1,4 +1,4 @@
-import 'package:project/domain/models/post_model.dart';
+import 'package:project/models/post_model.dart';
 
 import 'home_page_request.dart';
 

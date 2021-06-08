@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:project/domain/models/user.dart';
+import 'package:project/models/user.dart';
 
 class StateModel {
   bool isLoading;
