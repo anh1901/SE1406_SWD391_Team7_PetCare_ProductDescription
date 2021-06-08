@@ -1,0 +1,44 @@
+{
+  "posts": [
+    {
+      "postId":2,
+      "userId": 1,
+      "messageType": "0",
+      "messageInfo": "Tesing post 2",
+      "noComment": 1,
+      "noLike": 0,
+      "noRead": 0,
+      "fileCount": 1,
+      "followStatus": "Followed",
+      "isSelf": "0",
+      "likeStatus": "1",
+      "createTime": "2021-05-22 21:55:52",
+      "time": "2021-05-22 21:56:52",
+      "location": "TP.HCM",
+      "fileList": [{"fileId": 1, "fileUrl": "https://pngimg.com/uploads/dog/dog_PNG50375.png", "fileType": "0", "height": 1080, "width": 1080}],
+      "userInfo": {"userId": 1, "avatarImg": "https://pngimg.com/uploads/dog/dog_PNG50375.png", "nickname": "Anh"},
+      "tagLabel": {"tagId": 1, "tagName": "Dog"},
+      "commentList": [{"commentId": 1, "commentInfo": "Hahaa", "userId": 2, "messageId": 1, "nickname": "VipPro123", "atUsers": []}]
+    },
+    {
+      "postId":1,
+      "userId": 1,
+      "messageType": "0252552",
+      "messageInfo": "Tesing post",
+      "noComment": 1,
+      "noLike": 1,
+      "noRead": 1,
+      "fileCount": 1,
+      "followStatus": "Followed",
+      "isSelf": "0",
+      "likeStatus": "1",
+      "createTime": "2021-05-23 22:55:52",
+      "time": "2021-05-23 21:56:52",
+      "location": "Ha Noi",
+      "fileList": [{"fileId": 1, "fileUrl": "https://pngimg.com/uploads/dog/dog_PNG50377.png", "fileType": "0", "height": 1080, "width": 1080}],
+      "userInfo": {"userId": 2, "avatarImg": "https://pngimg.com/uploads/dog/dog_PNG50376.png", "nickname": "Em"},
+      "tagLabel": {"tagId": 1, "tagName": "Dog"},
+      "commentList": [{"commentId": 2, "commentInfo": "Interesting dog...", "userId": 2, "messageId": 2, "nickname": "VipPro123", "atUsers": []}]
+    }
+  ]
+}
