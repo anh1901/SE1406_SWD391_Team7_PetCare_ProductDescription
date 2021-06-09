@@ -8,8 +8,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
 import 'package:petcare/models/pet_model.dart';
 import 'package:petcare/widgets/app_size.dart';
 import 'package:petcare/widgets/commons.dart';
@@ -33,6 +33,7 @@ class CreatePetScreen extends StatefulWidget {
 }
 
 class _CreatePetScreenState extends State<CreatePetScreen> {
+  DateTime today = DateTime.now();
   File image;
   String fileName;
   PickedFile _imageFile;
@@ -48,6 +49,19 @@ class _CreatePetScreenState extends State<CreatePetScreen> {
   final TextEditingController maxHeightController = TextEditingController();
   final TextEditingController qualityController = TextEditingController();
   FirebaseStorage storage = FirebaseStorage.instance;
+  _selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+      context: context,
+      initialDate: today,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2025),
+    );
+    if (picked != null && picked != today)
+      setState(() {
+        today = picked;
+        birthday = picked as String;
+      });
+  }
 
   void onGenderSelected(String genderKey) {
     setState(() {
@@ -73,7 +87,7 @@ class _CreatePetScreenState extends State<CreatePetScreen> {
 
   createPet() {
     addPet();
-    Toast.showSuccess('Successfully add new pet');
+    Toast.showSuccess(AppLocalizations.of(context).addPetSuccess);
     Navigator.of(context).pop();
   }
 
@@ -110,7 +124,7 @@ class _CreatePetScreenState extends State<CreatePetScreen> {
               Padding(
                 padding: const EdgeInsets.only(left: 15, top: 50),
                 child: CustomText(
-                  text: "Add new pet",
+                  text: AppLocalizations.of(context).addPetTitle,
                   size: 20,
                   fontWeight: FontWeight.bold,
                 ),
@@ -118,7 +132,7 @@ class _CreatePetScreenState extends State<CreatePetScreen> {
               Padding(
                 padding: const EdgeInsets.all(15.0),
                 child: CustomText(
-                  text: "Having a new member in your family?",
+                  text: AppLocalizations.of(context).addPetQuestion,
                 ),
               ),
               Padding(
@@ -162,7 +176,10 @@ class _CreatePetScreenState extends State<CreatePetScreen> {
                                       height: 80,
                                     ),
                                   ),
-                                  CustomText(text: "From gallery", size: 20),
+                                  CustomText(
+                                      text: AppLocalizations.of(context)
+                                          .fromGallery,
+                                      size: 20),
                                 ],
                               ),
                               Column(
@@ -178,7 +195,10 @@ class _CreatePetScreenState extends State<CreatePetScreen> {
                                       height: 80,
                                     ),
                                   ),
-                                  CustomText(text: "Take a picture", size: 20),
+                                  CustomText(
+                                      text: AppLocalizations.of(context)
+                                          .fromCamera,
+                                      size: 20),
                                 ],
                               ),
                             ],
@@ -205,12 +225,12 @@ class _CreatePetScreenState extends State<CreatePetScreen> {
                                   text: "Chosen an image from $image")),
                         ],
                       )
-                    : CustomText(text: "No pet image."),
+                    : CustomText(text: AppLocalizations.of(context).noPetImage),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: CustomText(
-                  text: "Pet name",
+                  text: AppLocalizations.of(context).petName,
                   size: 18,
                   fontWeight: FontWeight.bold,
                 ),
@@ -219,7 +239,7 @@ class _CreatePetScreenState extends State<CreatePetScreen> {
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
                   decoration: InputDecoration(
-                    labelText: "Name",
+                    labelText: AppLocalizations.of(context).name,
                     fillColor: Colors.white,
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.blue, width: 2.0),
@@ -233,7 +253,7 @@ class _CreatePetScreenState extends State<CreatePetScreen> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: CustomText(
-                  text: "Types of pet",
+                  text: AppLocalizations.of(context).petType,
                   size: 18,
                   fontWeight: FontWeight.bold,
                 ),
@@ -242,7 +262,7 @@ class _CreatePetScreenState extends State<CreatePetScreen> {
                 padding: const EdgeInsets.all(8.0),
                 child: DropdownButton(
                   isExpanded: true,
-                  hint: Text('Please choose a type of pet'),
+                  hint: Text(AppLocalizations.of(context).petTypeLabel),
                   value: _selectedType,
                   onChanged: (newValue) {
                     setState(() {
@@ -260,7 +280,7 @@ class _CreatePetScreenState extends State<CreatePetScreen> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: CustomText(
-                  text: "Breed",
+                  text: AppLocalizations.of(context).breed,
                   size: 18,
                   fontWeight: FontWeight.bold,
                 ),
@@ -269,7 +289,7 @@ class _CreatePetScreenState extends State<CreatePetScreen> {
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
                   decoration: InputDecoration(
-                    labelText: "Breed",
+                    labelText: AppLocalizations.of(context).breed,
                     fillColor: Colors.white,
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.blue, width: 2.0),
@@ -283,7 +303,7 @@ class _CreatePetScreenState extends State<CreatePetScreen> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: CustomText(
-                  text: "Weight",
+                  text: AppLocalizations.of(context).weight,
                   size: 18,
                   fontWeight: FontWeight.bold,
                 ),
@@ -292,7 +312,7 @@ class _CreatePetScreenState extends State<CreatePetScreen> {
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
                   decoration: InputDecoration(
-                    labelText: "Weight",
+                    labelText: AppLocalizations.of(context).weight,
                     fillColor: Colors.white,
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.blue, width: 2.0),
@@ -306,7 +326,7 @@ class _CreatePetScreenState extends State<CreatePetScreen> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: CustomText(
-                  text: "Description",
+                  text: AppLocalizations.of(context).description,
                   size: 18,
                   fontWeight: FontWeight.bold,
                 ),
@@ -315,7 +335,7 @@ class _CreatePetScreenState extends State<CreatePetScreen> {
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
                   decoration: InputDecoration(
-                    labelText: "Description",
+                    labelText: AppLocalizations.of(context).description,
                     fillColor: Colors.white,
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.blue, width: 2.0),
@@ -329,28 +349,50 @@ class _CreatePetScreenState extends State<CreatePetScreen> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: CustomText(
-                  text: "Birthday/Adoption Day",
+                  text: AppLocalizations.of(context).birthday,
                   size: 18,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  height: 200,
-                  child: CupertinoDatePicker(
-                    mode: CupertinoDatePickerMode.date,
-                    initialDateTime: DateTime(1969, 1, 1),
-                    onDateTimeChanged: (DateTime newDateTime) {
-                      birthday = DateFormat('yyyy-MM-dd').format(newDateTime);
-                    },
-                  ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Container(
+                      decoration: BoxDecoration(color: Colors.white),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: CustomText(
+                            text: "${today.toLocal()}".split(' ')[0],
+                            color: Colors.grey),
+                      ),
+                    ),
+                    RaisedButton(
+                      onPressed: () => _selectDate(context),
+                      child: Icon(Icons.today),
+                      color: Colors.cyanAccent,
+                    ),
+                  ],
                 ),
               ),
+              // Padding(
+              //   padding: const EdgeInsets.all(8.0),
+              //   child: Container(
+              //     height: 200,
+              //     child: CupertinoDatePicker(
+              //       mode: CupertinoDatePickerMode.date,
+              //       initialDateTime: DateTime(1969, 1, 1),
+              //       onDateTimeChanged: (DateTime newDateTime) {
+              //         birthday = DateFormat('yyyy-MM-dd').format(newDateTime);
+              //       },
+              //     ),
+              //   ),
+              // ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: CustomText(
-                  text: "Gender",
+                  text: AppLocalizations.of(context).gender,
                   size: 18,
                   fontWeight: FontWeight.bold,
                 ),
@@ -384,7 +426,9 @@ class _CreatePetScreenState extends State<CreatePetScreen> {
                       createPet();
                     },
                     child: CustomText(
-                        text: "Add pet", size: 24, fontWeight: FontWeight.bold),
+                        text: AppLocalizations.of(context).addPetButton,
+                        size: 24,
+                        fontWeight: FontWeight.bold),
                   ),
                 ),
               ),

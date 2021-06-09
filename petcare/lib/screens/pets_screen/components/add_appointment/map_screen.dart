@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -62,7 +63,8 @@ class _MapScreenState extends State<MapScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
-        title: CustomText(text: 'Select your location'),
+        title:
+            CustomText(text: AppLocalizations.of(context).selectLocationTitle),
         actions: [
           if (_origin != null)
             TextButton(
@@ -141,7 +143,7 @@ class _MapScreenState extends State<MapScreen> {
           Container(
             alignment: Alignment.bottomCenter,
             child: SizedBox(
-              height: SizeFit.screenHeight / 13,
+              height: SizeFit.screenHeight / 12,
               width: SizeFit.screenWidth / 3,
               child: Container(
                 color: ColorStyles.white,
@@ -159,7 +161,8 @@ class _MapScreenState extends State<MapScreen> {
                               showModal(context);
                             }
                           : null,
-                      child: Text('Choose store'),
+                      child:
+                          Text(AppLocalizations.of(context).chooseStoreButton),
                     )),
               ),
             ),
@@ -207,7 +210,7 @@ class _MapScreenState extends State<MapScreen> {
                     )),
                     child: Center(
                       child: CustomText(
-                        text: 'Choose the store',
+                        text: AppLocalizations.of(context).nearbyStoreTitle,
                         size: 20,
                         fontWeight: FontWeight.bold,
                       ),
@@ -232,7 +235,8 @@ class _MapScreenState extends State<MapScreen> {
                                   return Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: CustomText(
-                                        text: "No store found in your area."),
+                                        text: AppLocalizations.of(context)
+                                            .noStoreAvailable),
                                   );
                                 } else {
                                   return Container(
@@ -262,14 +266,29 @@ class _MapScreenState extends State<MapScreen> {
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
                                                 children: <Widget>[
-                                                  Text(snapshot.data[index]
-                                                      ["storeName"]),
+                                                  CustomText(
+                                                    text: snapshot.data[index]
+                                                        ["storeName"],
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
                                                   Container(
                                                     padding: EdgeInsets.only(
                                                         top: 5.0),
                                                     child: Text(
                                                         snapshot.data[index]
                                                             ["location"]),
+                                                  ),
+                                                  Text(
+                                                      "${snapshot.data[index]["distance"]} km"),
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                          "${snapshot.data[index]["rate"]}"),
+                                                      Icon(
+                                                        Icons.star,
+                                                        color: Colors.yellow,
+                                                      ),
+                                                    ],
                                                   ),
                                                 ],
                                               ),
@@ -308,7 +327,9 @@ class _MapScreenState extends State<MapScreen> {
                                                                     "storeName"])));
                                                   }
                                                 : null,
-                                            child: Text('Choose'),
+                                            child: Text(
+                                                AppLocalizations.of(context)
+                                                    .confirmStoreButton),
                                           ),
                                         ),
                                       ],

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:petcare/screens/home_screen/home_screen.dart';
 import 'package:petcare/screens/notifications_screen/notification_screen.dart';
 import 'package:petcare/screens/pets_screen/pets_screen.dart';
@@ -14,27 +15,27 @@ final List<Widget> pageList = [
   NotificationsScreen(),
   ProfileScreen(),
 ];
-List<BottomNavigationBarItem> itemList(Store store) {
+List<BottomNavigationBarItem> itemList(Store store, BuildContext context) {
   return [
     BottomNavigationBarItem(
       icon: Icon(Icons.pets),
-      label: "Pets",
+      label: AppLocalizations.of(context).petsScreen,
     ),
     BottomNavigationBarItem(
       icon: Icon(Icons.home),
-      label: "Network",
+      label: AppLocalizations.of(context).home,
     ),
     BottomNavigationBarItem(
       icon: Icon(Icons.shopping_cart),
-      label: "Shopping",
+      label: AppLocalizations.of(context).shopping,
     ),
     BottomNavigationBarItem(
       icon: Icon(Icons.notifications),
-      label: "Events",
+      label: AppLocalizations.of(context).events,
     ),
     BottomNavigationBarItem(
       icon: Icon(Icons.perm_identity),
-      label: "Profile",
+      label: AppLocalizations.of(context).profileScreen,
     ),
   ];
 }

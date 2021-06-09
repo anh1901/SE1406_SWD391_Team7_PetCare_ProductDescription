@@ -3,6 +3,7 @@ import 'package:cupertino_radio_choice/cupertino_radio_choice.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_image/network.dart';
 import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
@@ -22,16 +23,16 @@ import 'checkout_screen.dart';
 
 final currency = new NumberFormat("#,##0", "vi_VN");
 final Map<String, String> serviceTypes = {
-  'Pickup': 'Pick Up',
-  'StoreVisit': 'Store Visit',
+  'Pickup': 'Đến đón',
+  'StoreVisit': 'Đi đến',
 };
 final Map<String, String> availableTime = {
-  '1': '7:00',
-  '2': '9:00',
-  '3': '12:00',
-  '4': '13:30',
-  '5': '15:00',
-  '6': '16:00',
+  '1': '7:00 -8:30 ',
+  '2': '9:00 -10:30',
+  '3': '13:30-13:00',
+  '4': '15:00-16:30',
+  '5': '16:00-17:30',
+  '6': '18:00-19:30',
 };
 
 final FirebaseAuth auth = FirebaseAuth.instance;
@@ -148,7 +149,7 @@ class _BookServiceScreenState extends State<BookServiceScreen> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: CustomText(
-                    text: "Your location",
+                    text: AppLocalizations.of(context).selectLocationTitle,
                     size: 18,
                     fontWeight: FontWeight.bold,
                   ),

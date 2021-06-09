@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:petcare/redux/redux_state.dart';
@@ -9,7 +10,6 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'components/pet_appointment.dart';
 import 'components/pet_list.dart';
-import 'components/pet_screen_title.dart';
 import 'create_pet.dart';
 
 class PetsScreen extends StatefulWidget {
@@ -36,7 +36,29 @@ class _PetsScreenState extends State<PetsScreen> {
             children: <Widget>[
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: title,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 45.0, top: 10.0),
+                    child: Row(
+                      children: [
+                        Text(
+                          AppLocalizations.of(context).hello,
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.grey,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          " User",
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.blue[200],
+                              fontWeight: FontWeight.bold),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -46,7 +68,7 @@ class _PetsScreenState extends State<PetsScreen> {
                     child: SizedBox(
                       width: MediaQuery.of(context).size.width * 0.9,
                       child: CustomText(
-                        text: "Looking for something for your pets?",
+                        text: AppLocalizations.of(context).petsScreenTitle,
                         size: 18,
                         color: ColorStyles.color_666666,
                       ),
@@ -62,7 +84,7 @@ class _PetsScreenState extends State<PetsScreen> {
                   Padding(
                     padding: const EdgeInsets.only(top: 10, left: 12),
                     child: CustomText(
-                      text: "My Pets",
+                      text: AppLocalizations.of(context).myPets,
                       size: 22,
                       color: ColorStyles.color_1a1a1a,
                     ),

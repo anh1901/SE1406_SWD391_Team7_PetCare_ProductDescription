@@ -1,5 +1,6 @@
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:petcare/redux/redux_index.dart';
 import 'package:petcare/widgets/commons.dart';
@@ -57,7 +58,7 @@ class _MainScreenState extends State<MainScreen> {
               );
               setState(() {});
             },
-            items: itemList(store),
+            items: itemList(store, context),
           ),
           body: DoubleBackToCloseApp(
             child: PageView(
@@ -70,7 +71,8 @@ class _MainScreenState extends State<MainScreen> {
               children: pageList,
             ),
             snackBar: SnackBar(
-              content: SizedBox(child: Text('Tap back again to leave')),
+              content: SizedBox(
+                  child: Text("${AppLocalizations.of(context).doubleTap}")),
               backgroundColor: Colors.black26,
               behavior: SnackBarBehavior.floating,
               margin: EdgeInsets.only(bottom: 70, left: 10.0, right: 10.0),

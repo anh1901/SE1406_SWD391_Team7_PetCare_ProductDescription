@@ -9,8 +9,8 @@ import 'package:petcare/widgets/toast.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 final Map<String, String> paymentMethods = {
-  'cash': '    Cash    ',
   'credit': 'Credit Card',
+  'cash': '    Cash    ',
   'net_banking': 'Net Banking',
 };
 
@@ -294,7 +294,9 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     CustomText(text: "Total:"),
-                                    CustomText(text: "152.000đ"),
+                                    CustomText(
+                                        text: "152.000đ",
+                                        fontWeight: FontWeight.bold),
                                   ],
                                 ),
                               ),

@@ -243,15 +243,15 @@ class ProfileScreen extends StatelessWidget {
 
   Widget renderProfileList(BuildContext context, Store store) {
     final titles = [
-      "Change theme",
+      AppLocalizations.of(context).changeTheme,
       AppLocalizations.of(context).language,
-      "Edit Profile",
-      "Order",
-      "Shipping Address",
-      "My credit card",
-      "Review this app",
-      "About us",
-      "Logout"
+      AppLocalizations.of(context).editProfile,
+      AppLocalizations.of(context).order,
+      AppLocalizations.of(context).shippingAddress,
+      AppLocalizations.of(context).creditCard,
+      AppLocalizations.of(context).reviewMyApp,
+      AppLocalizations.of(context).aboutus,
+      AppLocalizations.of(context).logout,
     ];
     return SliverToBoxAdapter(
       child: Container(

@@ -11,6 +11,8 @@ class StoreModel {
   String storeName;
   String location;
   double rating;
+  double distance;
+  double rate;
   String description;
 
   StoreModel({
@@ -19,6 +21,8 @@ class StoreModel {
     this.storeName,
     this.location,
     this.rating,
+    this.distance,
+    this.rate,
     this.description,
   });
 
@@ -28,6 +32,8 @@ class StoreModel {
         storeName: json["storeName"],
         location: json["location"],
         rating: json["rating"],
+        distance: json["distance"],
+        rate: json["rate"],
         description: json["description"],
       );
 
@@ -37,6 +43,8 @@ class StoreModel {
         "storeName": storeName,
         "location": location,
         "rating": rating,
+        "distance": distance,
+        "rate": rate,
         "description": description,
       };
 }
