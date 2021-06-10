@@ -14,9 +14,11 @@ class SharedStorage {
 
   static bool showWelcome = false;
   static bool showLogin = false;
+  static bool showTutorial = false;
   static Future initStorage() async {
     showWelcome = await SharedUtils.getBool(SharedConstant.welcomePage);
     showLogin = await SharedUtils.getBool(SharedConstant.isLogin);
+    showTutorial = await SharedUtils.getBool(SharedConstant.tutorialPage);
   }
 
   static saveDeviceInfo() {
@@ -61,5 +63,9 @@ class SharedStorage {
 
   static saveShowWelcome() {
     SharedUtils.setBool(SharedConstant.welcomePage, true);
+  }
+
+  static saveShowTutorial() {
+    SharedUtils.setBool(SharedConstant.tutorialPage, true);
   }
 }

@@ -1,22 +1,22 @@
 import 'package:flushbar/flushbar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:petcare/models/user.dart';
-import 'package:petcare/screens/basic_screen/basic_screen.dart';
-import 'package:petcare/screens/login_screen/components/auth.dart';
-import 'package:petcare/screens/login_screen/forgot_password_screen.dart';
-import 'package:petcare/screens/login_screen/signup_screen.dart';
 import 'package:petcare/services/validator.dart';
 
+import 'components/auth.dart';
 import 'components/loading.dart';
+import 'login_screen.dart';
 
-class LoginScreen extends StatefulWidget {
-  static final String routerName = 'login';
-  _LoginScreenState createState() => _LoginScreenState();
+class SignUpScreen extends StatefulWidget {
+  static final String routerName = 'signup';
+  _SignUpScreenState createState() => _SignUpScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignUpScreenState extends State<SignUpScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _firstName = new TextEditingController();
+  final TextEditingController _lastName = new TextEditingController();
   final TextEditingController _email = new TextEditingController();
   final TextEditingController _password = new TextEditingController();
 
@@ -41,6 +41,44 @@ class _LoginScreenState extends State<LoginScreen> {
               height: 120.0,
             ),
           )),
+    );
+
+    final firstName = TextFormField(
+      autofocus: false,
+      textCapitalization: TextCapitalization.words,
+      controller: _firstName,
+      validator: Validator.validateName,
+      decoration: InputDecoration(
+        prefixIcon: Padding(
+          padding: EdgeInsets.only(left: 5.0),
+          child: Icon(
+            Icons.person,
+            color: Colors.grey,
+          ),
+        ),
+        hintText: 'First Name',
+        contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
+      ),
+    );
+
+    final lastName = TextFormField(
+      autofocus: false,
+      textCapitalization: TextCapitalization.words,
+      controller: _lastName,
+      validator: Validator.validateName,
+      decoration: InputDecoration(
+        prefixIcon: Padding(
+          padding: EdgeInsets.only(left: 5.0),
+          child: Icon(
+            Icons.person,
+            color: Colors.grey,
+          ),
+        ),
+        hintText: 'Last Name',
+        contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
+      ),
     );
 
     final email = TextFormField(
@@ -81,58 +119,44 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
 
-    final loginButton = Padding(
+    final signUpButton = Padding(
       padding: EdgeInsets.symmetric(vertical: 16.0),
       child: RaisedButton(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(24),
         ),
         onPressed: () {
-          _emailLogin(
-              email: _email.text, password: _password.text, context: context);
+          _emailSignUp(
+              firstName: _firstName.text,
+              lastName: _lastName.text,
+              email: _email.text,
+              password: _password.text,
+              context: context);
         },
         padding: EdgeInsets.all(12),
         color: Theme.of(context).primaryColor,
-        child: Text('SIGN IN', style: TextStyle(color: Colors.white)),
+        child: Text('SIGN UP', style: TextStyle(color: Colors.white)),
       ),
     );
 
-    final forgotLabel = FlatButton(
-      child: Text(
-        'Forgot password?',
-        style: TextStyle(color: Colors.lightBlueAccent),
-      ),
-      onPressed: () {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (BuildContext context) => ForgotPasswordScreen(),
+    final signInLabel = FlatButton(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'Have an Account?',
+            style: TextStyle(color: Colors.black54),
           ),
-        );
-      },
-    );
-
-    final signUpLabel = FlatButton(
-      child: Text(
-        'Create an Account',
-        style: TextStyle(color: Colors.black54),
-      ),
-      onPressed: () {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (BuildContext context) => SignUpScreen(),
+          Text(
+            ' Sign in',
+            style: TextStyle(color: Colors.lightBlueAccent),
           ),
-        );
-      },
-    );
-    final skipLabel = FlatButton(
-      child: Text(
-        'Skip',
-        style: TextStyle(color: Colors.grey),
+        ],
       ),
       onPressed: () {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (BuildContext context) => BasicScreen(),
+            builder: (BuildContext context) => LoginScreen(),
           ),
         );
       },
@@ -154,30 +178,16 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: <Widget>[
                       logo,
                       SizedBox(height: 48.0),
+                      firstName,
+                      SizedBox(height: 24.0),
+                      lastName,
+                      SizedBox(height: 24.0),
                       email,
                       SizedBox(height: 24.0),
                       password,
                       SizedBox(height: 12.0),
-                      loginButton,
-                      // FutureBuilder(
-                      //   future: Auth.initializeFirebase(context),
-                      //   builder: (context, snapshot) {
-                      //     if (snapshot.hasError) {
-                      //       return Text('Error initializing Firebase');
-                      //     } else if (snapshot.connectionState ==
-                      //         ConnectionState.done) {
-                      //       return GoogleSignInButton();
-                      //     }
-                      //     return CircularProgressIndicator(
-                      //       valueColor: AlwaysStoppedAnimation<Color>(
-                      //         Colors.lightBlueAccent,
-                      //       ),
-                      //     );
-                      //   },
-                      // ),
-                      forgotLabel,
-                      signUpLabel,
-                      skipLabel,
+                      signUpButton,
+                      signInLabel
                     ],
                   ),
                 ),
@@ -194,41 +204,42 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
-  void _emailLogin(
-      {String email, String password, BuildContext context}) async {
+  void _emailSignUp(
+      {String firstName,
+      String lastName,
+      String email,
+      String password,
+      BuildContext context}) async {
     if (_formKey.currentState.validate()) {
       try {
         SystemChannels.textInput.invokeMethod('TextInput.hide');
         await _changeLoadingVisible();
-        await logInUser(email, password, context);
+        await Auth.signUp(email, password).then((uID) {
+          // Auth.addUserSettingsDB(new User(
+          //   userId: uID,
+          //   email: email,
+          //   firstName: firstName,
+          //   lastName: lastName,
+          // ));
+        });
+
         await Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (BuildContext context) => BasicScreen(),
+            builder: (BuildContext context) => LoginScreen(),
           ),
         );
       } catch (e) {
         _changeLoadingVisible();
-        print("Sign In Error: $e");
+        print("Sign Up Error: $e");
         String exception = Auth.getExceptionText(e);
         Flushbar(
-          title: "Sign In Error",
+          title: "Sign Up Error",
           message: exception,
           duration: Duration(seconds: 5),
-        ).show(context);
+        )..show(context);
       }
     } else {
       setState(() => _autoValidate = true);
     }
-  }
-
-  Future<void> logOutUser() async {
-    await Auth.signOut();
-  }
-
-  Future<void> logInUser(email, password, context) async {
-    String userId = await Auth.signIn(email, password, context);
-    await Auth.checkUserExist(userId);
-    UserModel user = (await Auth.getUserFirestore(userId));
-    await Auth.storeUserLocal(user);
   }
 }

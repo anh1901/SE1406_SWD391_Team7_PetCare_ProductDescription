@@ -28,48 +28,6 @@ class PetAppointment extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 10, left: 12),
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width * 0.8,
-                child: Row(
-                  children: [
-                    CustomText(
-                      text: AppLocalizations.of(context).petsAppointment,
-                      size: 22,
-                      color: ColorStyles.color_1a1a1a,
-                    ),
-                    CustomText(
-                      text: " (${appointmentList.length})",
-                      size: 18,
-                      color: ColorStyles.color_1a1a1a,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 10, right: 12),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      PageTransition(
-                          type: PageTransitionType.bottomToTop,
-                          child: MapScreen()));
-                },
-                child: Icon(
-                  Icons.add_circle,
-                  size: 40,
-                  color: ColorStyles.main_color,
-                ),
-              ),
-            ),
-          ],
-        ),
         Container(
           height: SizeFit.screenHeight / 6,
           width: SizeFit.screenWidth * 0.9,

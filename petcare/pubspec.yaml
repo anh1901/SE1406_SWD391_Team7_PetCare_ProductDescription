@@ -71,6 +71,7 @@ dependencies:
   multi_select_flutter: ^4.0.0
   timer_builder: ^2.0.0
   carousel_slider: ^3.0.0
+  highlighter_coachmark: ^0.0.3
 
 
 dev_dependencies:
