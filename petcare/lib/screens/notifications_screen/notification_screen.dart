@@ -95,7 +95,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                 ),
                 //
                 Container(
-                  height: SizeFit.screenHeight / 10,
+                  height: SizeFit.screenHeight / 8,
                   width: SizeFit.screenWidth * 0.95,
                   child: ListView.builder(
                     scrollDirection: Axis.vertical,
@@ -116,8 +116,11 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                         return Padding(
                           padding: const EdgeInsets.all(5.0),
                           child: Container(
-                            decoration:
-                                BoxDecoration(color: Colors.lightBlue[100]),
+                            decoration: BoxDecoration(
+                              color: Colors.lightBlue[100],
+                              border: Border.all(color: Colors.lightBlueAccent),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
                             child: Column(
                               children: <Widget>[
                                 GestureDetector(
@@ -225,8 +228,11 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                         return Padding(
                           padding: const EdgeInsets.all(5.0),
                           child: Container(
-                            decoration:
-                                BoxDecoration(color: Colors.lightBlue[100]),
+                            decoration: BoxDecoration(
+                              color: Colors.lightBlue[100],
+                              border: Border.all(color: Colors.lightBlueAccent),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
                             child: Column(
                               children: <Widget>[
                                 GestureDetector(

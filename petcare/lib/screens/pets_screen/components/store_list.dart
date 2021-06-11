@@ -9,7 +9,6 @@ class StoreList extends StatefulWidget {
 
 class _StoreListState extends State<StoreList> {
   @override
-  @override
   Widget build(BuildContext context) {
     return FutureBuilder(
       //future: ,

@@ -14,6 +14,20 @@ class RefreshShowWelcomeAction {
   RefreshShowWelcomeAction(this.showWelcome);
 }
 
+final TutorialReducer = combineReducers<bool>([
+  TypedReducer<bool, RefreshShowTutorialAction>(_refreshTutorial),
+]);
+bool _refreshTutorial(bool showTutorial, action) {
+  showTutorial = action.showTutorial;
+  return showTutorial;
+}
+
+class RefreshShowTutorialAction {
+  final bool showTutorial;
+
+  RefreshShowTutorialAction(this.showTutorial);
+}
+
 final showLoginReducer = combineReducers<bool>([
   TypedReducer<bool, RefreshShowLoginAction>(_refreshShowLogin),
 ]);

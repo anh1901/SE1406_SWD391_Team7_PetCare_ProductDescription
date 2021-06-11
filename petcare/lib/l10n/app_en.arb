@@ -51,5 +51,6 @@
   "nearbyStoreTitle":"Nearby store",
   "noStoreAvailable": "No store found in your area.",
   "confirmStoreButton": "Choose",
-  "selectedStore": "Selected store"
+  "selectedStore": "Selected store",
+  "stores": "Popular store"
 }

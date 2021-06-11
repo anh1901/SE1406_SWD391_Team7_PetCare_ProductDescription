@@ -12,6 +12,7 @@ class ReduxState {
   Locale locale;
   Locale platformLocale;
   bool isLogin;
+  bool isTutorial;
   ConfigInfo configInfo;
   DeviceInfoModel deviceInfo;
   List<PetModel> petList;
@@ -21,6 +22,7 @@ class ReduxState {
     this.themeData,
     this.isNightModal,
     this.isLogin,
+    this.isTutorial,
     this.configInfo,
     this.deviceInfo,
     this.petList,

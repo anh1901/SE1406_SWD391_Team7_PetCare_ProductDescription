@@ -1,13 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:petcare/models/appointment_model.dart';
 import 'package:petcare/widgets/app_size.dart';
 import 'package:petcare/widgets/commons.dart';
 import 'package:petcare/widgets/custom_text.dart';
-
-import 'add_appointment/map_screen.dart';
 
 List<AppointmentModel> appointmentList = [
   AppointmentModel(
@@ -29,7 +25,7 @@ class PetAppointment extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Container(
-          height: SizeFit.screenHeight / 6,
+          height: SizeFit.screenHeight / 5,
           width: SizeFit.screenWidth * 0.9,
           child: ListView.builder(
             scrollDirection: Axis.vertical,

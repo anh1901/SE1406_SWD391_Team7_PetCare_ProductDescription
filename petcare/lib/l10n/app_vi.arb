@@ -51,5 +51,6 @@
   "nearbyStoreTitle":"Cửa hàng gần đây",
   "noStoreAvailable": "Không cửa hàng nào gần bạn.",
   "confirmStoreButton": "Chọn",
-  "selectedStore": "Cửa hàng đã chọn"
+  "selectedStore": "Cửa hàng đã chọn",
+  "stores": "Cửa hàng nổi tiếng"
 }
