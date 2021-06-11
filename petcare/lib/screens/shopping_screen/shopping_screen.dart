@@ -49,7 +49,7 @@ class _ShoppingState extends State<ShoppingScreen> {
                         color: ColorStyles.color_666666,
                       ),
                       CustomText(
-                        text: "Price: 30.0",
+                        text: "Price: 50.0",
                         size: 18,
                         color: ColorStyles.color_666666,
                       ),
@@ -118,7 +118,7 @@ class _ShoppingState extends State<ShoppingScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       CustomText(
-                        text: "Pet toys",
+                        text: "Bone Plusie",
                         size: 18,
                         color: ColorStyles.color_666666,
                       ),
