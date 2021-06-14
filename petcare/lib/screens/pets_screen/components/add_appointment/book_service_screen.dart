@@ -27,12 +27,12 @@ final Map<String, String> serviceTypes = {
   'StoreVisit': 'Đi đến',
 };
 final Map<String, String> availableTime = {
-  '1': '7:00 -8:30 ',
-  '2': '9:00 -10:30',
-  '3': '13:30-13:00',
-  '4': '15:00-16:30',
-  '5': '16:00-17:30',
-  '6': '18:00-19:30',
+  '1': '7:00 - 8:30 ',
+  '2': '9:00 - 10:30',
+  '3': '13:30 - 13:00',
+  '4': '15:00 - 16:30',
+  '5': '16:00 - 17:30',
+  '6': '18:00 - 19:30',
 };
 
 final FirebaseAuth auth = FirebaseAuth.instance;
@@ -56,11 +56,6 @@ final petRef = FirebaseFirestore.instance
       fromFirestore: (snapshot, _) => PetModel.fromJson(snapshot.data()),
       toFirestore: (pet, _) => pet.toJson(),
     );
-
-Future getListPet() async {
-  QuerySnapshot petList = (await petRef.get());
-  return petList.docs;
-}
 
 Future getListStore() async {
   QuerySnapshot storeList = (await storeRef.get());
@@ -99,13 +94,29 @@ class _BookServiceScreenState extends State<BookServiceScreen> {
     });
   }
 
+  String _currentStore;
+  String _currentAddress;
+  String _selectedPetId;
+  String _selectedDate;
+  double _totalPrice = 0;
+  String _storeName;
   bookService() {
-    //createBookService();
     Toast.showSuccess('Info saved.');
     Navigator.push(
         context,
         PageTransition(
-            type: PageTransitionType.rightToLeft, child: CheckOutScreen()));
+            type: PageTransitionType.rightToLeft,
+            child: CheckOutScreen(
+              storeId: _currentStore,
+              storeName: _storeName,
+              currentAddress: _currentAddress,
+              selectedPetId: _selectedPetId,
+              selectedTime: _selectedTime,
+              selectedDate: _selectedDate,
+              selectedType: _selectedType,
+              selectedServiceIndex: _selectedServiceIndex,
+              totalPrice: _totalPrice,
+            )));
   }
 
   var today = new DateTime(
@@ -120,6 +131,18 @@ class _BookServiceScreenState extends State<BookServiceScreen> {
     setState(() {
       _selectedTime = time;
     });
+  }
+
+  Future getListPet() async {
+    QuerySnapshot petList = (await petRef.get());
+    _selectedPetId = petList.docs[0]["id"];
+    return petList.docs;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedDate = today.toString();
   }
 
   @override
@@ -472,7 +495,10 @@ class _BookServiceScreenState extends State<BookServiceScreen> {
                       minimumDate: today,
                       minuteInterval: 1,
                       mode: CupertinoDatePickerMode.date,
-                      onDateTimeChanged: (DateTime newDateTime) {},
+                      onDateTimeChanged: (DateTime newDateTime) {
+                        _selectedDate =
+                            DateFormat('dd-MM-yyyy').format(newDateTime);
+                      },
                     ),
                   ),
                 ),
@@ -558,6 +584,7 @@ class _BookServiceScreenState extends State<BookServiceScreen> {
       enableDrag: true,
       builder: (builder) {
         return SingleChildScrollView(
+          physics: ScrollPhysics(),
           child: Container(
             color: Colors.grey[800],
             height: SizeFit.screenHeight * 0.54,
@@ -568,7 +595,7 @@ class _BookServiceScreenState extends State<BookServiceScreen> {
                     topLeft: const Radius.circular(20.0),
                     topRight: const Radius.circular(20.0)),
               ),
-              child: Column(
+              child: ListView(
                 children: <Widget>[
                   Container(
                     height: 40.0,
@@ -600,6 +627,7 @@ class _BookServiceScreenState extends State<BookServiceScreen> {
                               );
                             }
                             return ListView.builder(
+                                physics: NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
                                 scrollDirection: Axis.vertical,
                                 itemCount: snapshot.data.length,
@@ -614,7 +642,8 @@ class _BookServiceScreenState extends State<BookServiceScreen> {
                                       onTap: () {
                                         setState(() {
                                           _selectedIndex = index;
-                                          print(petRef.get);
+                                          _selectedPetId =
+                                              snapshot.data[index]["id"];
                                         });
                                         Navigator.pop(context);
                                       },
@@ -755,7 +784,7 @@ class _BookServiceScreenState extends State<BookServiceScreen> {
                     topLeft: const Radius.circular(20.0),
                     topRight: const Radius.circular(20.0)),
               ),
-              child: Column(
+              child: ListView(
                 children: <Widget>[
                   Container(
                     height: 50.0,
@@ -804,15 +833,23 @@ class _BookServiceScreenState extends State<BookServiceScreen> {
                                           setState(() {
                                             if (!_selectedServiceIndex.contains(
                                                 snapshot.data[index]["id"])) {
+                                              _totalPrice = _totalPrice +
+                                                  snapshot.data[index]["price"];
                                               _selectedServiceIndex.add(
                                                   snapshot.data[index]["id"]);
                                             } else {
+                                              _totalPrice = _totalPrice -
+                                                  snapshot.data[index]["price"];
                                               _selectedServiceIndex.remove(
                                                   snapshot.data[index]["id"]);
                                             }
+
+                                            _currentStore = widget.currentStore;
+                                            _storeName = widget.storeName;
+                                            _currentAddress =
+                                                widget.currentAddress;
                                             setTimeout(1);
                                             setTimeout(999999);
-                                            print(_selectedServiceIndex);
                                           });
                                         },
                                         child: Padding(
