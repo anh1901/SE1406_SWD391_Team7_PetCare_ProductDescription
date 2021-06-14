@@ -168,50 +168,6 @@ class _PetsScreenState extends State<PetsScreen> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(top: 10, left: 12),
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.8,
-                      child: Row(
-                        children: [
-                          CustomText(
-                            text: AppLocalizations.of(context).petsAppointment,
-                            size: 22,
-                            color: ColorStyles.color_1a1a1a,
-                          ),
-                          CustomText(
-                            text: " (${appointmentList.length})",
-                            size: 18,
-                            color: ColorStyles.color_1a1a1a,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    key: isTutorial ? null : _appointmentKey,
-                    padding: const EdgeInsets.only(top: 10, right: 12),
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            PageTransition(
-                                type: PageTransitionType.bottomToTop,
-                                child: MapScreen()));
-                      },
-                      child: Icon(
-                        Icons.add_circle,
-                        size: 40,
-                        color: ColorStyles.main_color,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              PetAppointment(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10, left: 12),
                     child: CustomText(
                       text: AppLocalizations.of(context).stores,
                       size: 22,
@@ -278,7 +234,7 @@ class _PetsScreenState extends State<PetsScreen> {
                                               padding: EdgeInsets.only(top: 8),
                                               child: Padding(
                                                 padding:
-                                                    const EdgeInsets.all(20.0),
+                                                    const EdgeInsets.all(10.0),
                                                 child: Column(
                                                   children: [
                                                     SizedBox(
@@ -379,6 +335,45 @@ class _PetsScreenState extends State<PetsScreen> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(top: 10, left: 12),
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      child: Row(
+                        children: [
+                          CustomText(
+                            text: AppLocalizations.of(context).petsAppointment,
+                            size: 22,
+                            color: ColorStyles.color_1a1a1a,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    key: isTutorial ? null : _appointmentKey,
+                    padding: const EdgeInsets.only(top: 10, right: 12),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            PageTransition(
+                                type: PageTransitionType.bottomToTop,
+                                child: MapScreen()));
+                      },
+                      child: Icon(
+                        Icons.add_circle,
+                        size: 40,
+                        color: ColorStyles.main_color,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              PetAppointment(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10, left: 12),
                     child: CustomText(
                       text: AppLocalizations.of(context).myPets,
                       size: 22,
@@ -386,7 +381,7 @@ class _PetsScreenState extends State<PetsScreen> {
                     ),
                   ),
                   Padding(
-                    key: isTutorial ? null : _petsKey,
+                    //key: isTutorial ? null : _petsKey,
                     padding: const EdgeInsets.only(top: 10, right: 12),
                     child: GestureDetector(
                       onTap: () {

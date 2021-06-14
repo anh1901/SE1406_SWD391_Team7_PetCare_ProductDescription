@@ -10,6 +10,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:petcare/models/pet_model.dart';
 import 'package:petcare/widgets/app_size.dart';
 import 'package:petcare/widgets/commons.dart';
@@ -354,41 +355,41 @@ class _CreatePetScreenState extends State<CreatePetScreen> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Container(
-                      decoration: BoxDecoration(color: Colors.white),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: CustomText(
-                            text: "${today.toLocal()}".split(' ')[0],
-                            color: Colors.grey),
-                      ),
-                    ),
-                    RaisedButton(
-                      onPressed: () => _selectDate(context),
-                      child: Icon(Icons.today),
-                      color: Colors.cyanAccent,
-                    ),
-                  ],
-                ),
-              ),
               // Padding(
               //   padding: const EdgeInsets.all(8.0),
-              //   child: Container(
-              //     height: 200,
-              //     child: CupertinoDatePicker(
-              //       mode: CupertinoDatePickerMode.date,
-              //       initialDateTime: DateTime(1969, 1, 1),
-              //       onDateTimeChanged: (DateTime newDateTime) {
-              //         birthday = DateFormat('yyyy-MM-dd').format(newDateTime);
-              //       },
-              //     ),
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //     children: <Widget>[
+              //       Container(
+              //         decoration: BoxDecoration(color: Colors.white),
+              //         child: Padding(
+              //           padding: const EdgeInsets.all(8.0),
+              //           child: CustomText(
+              //               text: "${today.toLocal()}".split(' ')[0],
+              //               color: Colors.grey),
+              //         ),
+              //       ),
+              //       RaisedButton(
+              //         onPressed: () => _selectDate(context),
+              //         child: Icon(Icons.today),
+              //         color: Colors.cyanAccent,
+              //       ),
+              //     ],
               //   ),
               // ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  height: 200,
+                  child: CupertinoDatePicker(
+                    mode: CupertinoDatePickerMode.date,
+                    initialDateTime: DateTime(1969, 1, 1),
+                    onDateTimeChanged: (DateTime newDateTime) {
+                      birthday = DateFormat('yyyy-MM-dd').format(newDateTime);
+                    },
+                  ),
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: CustomText(
@@ -462,7 +463,8 @@ class _CreatePetScreenState extends State<CreatePetScreen> {
     //upload image
     await _upload();
     // Add a pet
-    await petRef.add(
+    await petRef
+        .add(
       PetModel(
         petImg: uploadUrl,
         petName: petName,
@@ -473,7 +475,13 @@ class _CreatePetScreenState extends State<CreatePetScreen> {
         type: _selectedType,
         description: description,
       ),
-    );
+    )
+        .then((value) {
+      FirebaseFirestore.instance
+          .collection('users/$uid/pets')
+          .doc(value.id)
+          .update({"id": value.id});
+    });
   }
 
   void _onImageButtonPressed(ImageSource source, {BuildContext context}) async {
