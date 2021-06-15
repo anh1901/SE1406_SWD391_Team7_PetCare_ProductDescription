@@ -92,8 +92,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
           child: Icon(
             Icons.email,
             color: Colors.grey,
-          ), // icon is 48px widget.
-        ), // icon is 48px widget.
+          ),
+        ),
         hintText: 'Email',
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
@@ -111,8 +111,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
           child: Icon(
             Icons.lock,
             color: Colors.grey,
-          ), // icon is 48px widget.
-        ), // icon is 48px widget.
+          ),
+        ),
         hintText: 'Password',
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
@@ -214,13 +214,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
       try {
         SystemChannels.textInput.invokeMethod('TextInput.hide');
         await _changeLoadingVisible();
-        await Auth.signUp(email, password).then((uID) {
-          // Auth.addUserSettingsDB(new User(
-          //   userId: uID,
-          //   email: email,
-          //   firstName: firstName,
-          //   lastName: lastName,
-          // ));
+        await Auth.signUp(email, password, context).then((uID) {
+          //add user to firestore
         });
 
         await Navigator.of(context).pushReplacement(

@@ -102,9 +102,30 @@ class Auth {
     );
   }
 
-  static Future<String> signUp(String email, String password) async {
-    User user = (await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: email, password: password)) as User;
+  static Future<String> signUp(
+      String email, String password, BuildContext context) async {
+    UserCredential userCredential;
+    try {
+      userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
+    } on FirebaseAuthException catch (e) {
+      print(e.code);
+      if (e.code == 'weak-password') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          Auth.customSnackBar(
+            'Password is weak.',
+          ),
+        );
+      } else if (e.code == 'email-already-in-use') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          Auth.customSnackBar(
+            'The account already exists for that email..',
+          ),
+        );
+      }
+    }
+    User user = userCredential.user;
+    print(user.uid);
     return user.uid;
   }
 
