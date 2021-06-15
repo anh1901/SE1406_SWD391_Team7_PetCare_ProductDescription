@@ -2,6 +2,7 @@ import 'package:flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:petcare/models/user.dart';
 import 'package:petcare/services/validator.dart';
 
 import 'components/auth.dart';
@@ -216,6 +217,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
         await _changeLoadingVisible();
         await Auth.signUp(email, password, context).then((uID) {
           //add user to firestore
+          Auth.addUserSettingsDB(new UserModel(
+            uid: uID,
+            email: email,
+            username: firstName + " " + lastName,
+          ));
         });
 
         await Navigator.of(context).pushReplacement(

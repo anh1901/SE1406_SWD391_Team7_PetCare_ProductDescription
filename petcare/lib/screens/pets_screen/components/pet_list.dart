@@ -36,123 +36,119 @@ class PetList extends StatelessWidget {
             return Center(
               child: CircularProgressIndicator(),
             );
-          }
-          return ListView.builder(
+          } else if (snapshot.data.length == 0) {
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: CustomText(text: "You have no pet."),
+            );
+          } else {
+            return ListView.builder(
               scrollDirection: Axis.horizontal,
               itemCount: snapshot.data.length,
               itemBuilder: (_, index) {
-                if (snapshot.data.length == 0) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: CustomText(text: "You have no pet."),
-                  );
-                } else {
-                  return Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.lightBlueAccent),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: GestureDetector(
-                            onTap: () {
-                              //
-                            }, //view pet detail
-                            child: Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: Container(
-                                width: SizeFit.screenWidth * 0.7,
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(20),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.blue[50],
-                                        offset: Offset(4, 6),
-                                        blurRadius: 20,
-                                      ),
-                                    ]),
-                                padding: EdgeInsets.only(top: 8),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(20.0),
-                                  child: Column(
-                                    children: [
-                                      SizedBox(
-                                        child: Image(
-                                          //load image from network with error handler
-                                          image: NetworkImageWithRetry(
-                                              snapshot.data[index]["petImg"]),
-                                          errorBuilder: (context, exception,
-                                                  stackTrack) =>
-                                              Icon(
-                                            Icons.error,
-                                          ),
+                return Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.lightBlueAccent),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: GestureDetector(
+                          onTap: () {
+                            //
+                          }, //view pet detail
+                          child: Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: Container(
+                              width: SizeFit.screenWidth * 0.7,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(20),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.blue[50],
+                                      offset: Offset(4, 6),
+                                      blurRadius: 20,
+                                    ),
+                                  ]),
+                              padding: EdgeInsets.only(top: 8),
+                              child: Padding(
+                                padding: const EdgeInsets.all(20.0),
+                                child: Column(
+                                  children: [
+                                    SizedBox(
+                                      child: Image(
+                                        //load image from network with error handler
+                                        image: NetworkImageWithRetry(
+                                            snapshot.data[index]["petImg"]),
+                                        errorBuilder:
+                                            (context, exception, stackTrack) =>
+                                                Icon(
+                                          Icons.error,
                                         ),
-                                        height: SizeConfig.screenHeight / 4,
                                       ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          CustomText(
-                                            text: snapshot.data[index]
-                                                ["petName"],
-                                            size: 22,
-                                            color: ColorStyles.color_333333,
-                                          ),
-                                          Icon(
-                                            snapshot.data[index]["sex"] ==
-                                                    "Male"
-                                                ? Icons.male
-                                                : Icons.female,
-                                            color: snapshot.data[index]
-                                                        ["sex"] ==
-                                                    "Male"
-                                                ? Colors.lightBlueAccent
-                                                : Colors.pinkAccent,
-                                          ),
-                                        ],
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          CustomText(
-                                            text: "Breed: " +
-                                                snapshot.data[index]
-                                                    ["petBreed"],
-                                            size: 16,
-                                            color: Colors.grey,
-                                          ),
-                                        ],
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          CustomText(
-                                            text: snapshot.data[index]
-                                                    ["petWeight"] +
-                                                " kg",
-                                            size: 16,
-                                            color: Colors.grey,
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
+                                      height: SizeConfig.screenHeight / 4,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        CustomText(
+                                          text: snapshot.data[index]["petName"],
+                                          size: 22,
+                                          color: ColorStyles.color_333333,
+                                        ),
+                                        Icon(
+                                          snapshot.data[index]["sex"] == "Male"
+                                              ? Icons.male
+                                              : Icons.female,
+                                          color: snapshot.data[index]["sex"] ==
+                                                  "Male"
+                                              ? Colors.lightBlueAccent
+                                              : Colors.pinkAccent,
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        CustomText(
+                                          text: "Breed: " +
+                                              snapshot.data[index]["petBreed"],
+                                          size: 16,
+                                          color: Colors.grey,
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        CustomText(
+                                          text: snapshot.data[index]
+                                                  ["petWeight"] +
+                                              " kg",
+                                          size: 16,
+                                          color: Colors.grey,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
                           ),
                         ),
-                      ],
-                    ),
-                  );
-                }
-              });
+                      ),
+                    ],
+                  ),
+                );
+              },
+            );
+          }
         },
       ),
     );

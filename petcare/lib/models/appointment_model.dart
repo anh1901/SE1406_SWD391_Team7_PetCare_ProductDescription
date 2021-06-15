@@ -1,6 +1,7 @@
 class AppointmentModel {
   final String id;
   final String storeId;
+  final String userId;
   final String currentAddress;
   final String selectedPetId;
   final String selectedDate;
@@ -12,6 +13,7 @@ class AppointmentModel {
   AppointmentModel({
     this.id,
     this.storeId,
+    this.userId,
     this.currentAddress,
     this.selectedPetId,
     this.selectedDate,
@@ -25,6 +27,7 @@ class AppointmentModel {
       AppointmentModel(
         id: json["id"],
         storeId: json["storeId"],
+        userId: json["userId"],
         currentAddress: json["currentAddress"],
         selectedPetId: json["selectedPetId"],
         selectedDate: json["selectedDate"],
@@ -37,6 +40,7 @@ class AppointmentModel {
   Map<String, dynamic> toJson() => {
         "id": id,
         "storeId": storeId,
+        "userId": userId,
         "currentAddress": currentAddress,
         "selectedPetId": selectedPetId,
         "selectedDate": selectedDate,

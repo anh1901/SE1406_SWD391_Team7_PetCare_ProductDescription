@@ -453,7 +453,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                 ),
               ),
               Container(
-                height: SizeFit.screenHeight * 1 / 3,
+                height: SizeFit.screenHeight * 1 / 2.8,
                 decoration: BoxDecoration(color: Colors.white70),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -600,6 +600,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
         .add(
       AppointmentModel(
         storeId: storeId,
+        userId: uid,
         currentAddress: currentAddress,
         selectedPetId: selectedPetId,
         selectedDate: selectedDate,

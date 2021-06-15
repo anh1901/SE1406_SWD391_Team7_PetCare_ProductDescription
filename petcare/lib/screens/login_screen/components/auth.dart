@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:petcare/models/user.dart';
+import 'package:petcare/widgets/toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 enum authProblems { UserNotFound, PasswordNotValid, NetworkError, UnknownError }
@@ -19,6 +20,17 @@ class Auth {
   static Future<FirebaseApp> initializeFirebase(BuildContext context) async {
     FirebaseApp firebaseApp = await Firebase.initializeApp();
     return firebaseApp;
+  }
+
+  static void addUserSettingsDB(UserModel user) async {
+    checkUserExist(user.uid).then((value) {
+      if (!value) {
+        Toast.showSuccess("Signed up successfully");
+        FirebaseFirestore.instance.doc("users/${user.uid}").set(user.toJson());
+      } else {
+        print("User ${user.username} exists");
+      }
+    });
   }
 
   static Future<User> signInWithGoogle(BuildContext context) async {
@@ -194,7 +206,7 @@ class Auth {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String storeUser = userToJson(user);
     await prefs.setString('user', storeUser);
-    return user.userId;
+    return user.uid;
   }
 
   static Future<UserModel> getCurrentFirebaseUser() async {
