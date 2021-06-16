@@ -13,12 +13,24 @@ final FirebaseAuth auth = FirebaseAuth.instance;
 final User user = auth.currentUser;
 final uid = (user == null) ? "YA0MCREEIsG4U8bUtyXQ" : user.uid;
 
+final petDetailRef = (String id) => FirebaseFirestore.instance
+    .collection('users/$uid/pets')
+    .where("id", isEqualTo: id)
+    .withConverter<PetModel>(
+      fromFirestore: (snapshot, _) => PetModel.fromJson(snapshot.data()),
+      toFirestore: (pet, _) => pet.toJson(),
+    );
 final petRef = FirebaseFirestore.instance
     .collection('users/$uid/pets')
     .withConverter<PetModel>(
       fromFirestore: (snapshot, _) => PetModel.fromJson(snapshot.data()),
       toFirestore: (pet, _) => pet.toJson(),
     );
+Future getPetDetail(String id) async {
+  QuerySnapshot petList = (await petDetailRef(id).get());
+  return petList.docs;
+}
+
 Future getListPet() async {
   QuerySnapshot petList = (await petRef.get());
   return petList.docs;
@@ -57,7 +69,7 @@ class PetList extends StatelessWidget {
                         ),
                         child: GestureDetector(
                           onTap: () {
-                            //
+                            showModal(context, snapshot.data[index]["id"]);
                           }, //view pet detail
                           child: Padding(
                             padding: const EdgeInsets.all(5.0),
@@ -151,6 +163,224 @@ class PetList extends StatelessWidget {
           }
         },
       ),
+    );
+  }
+
+  void showModal(context, id) {
+    showModalBottomSheet<dynamic>(
+      context: context,
+      isScrollControlled: true,
+      enableDrag: true,
+      builder: (builder) {
+        return SingleChildScrollView(
+          physics: ScrollPhysics(),
+          child: Container(
+            color: Colors.grey[800],
+            height: SizeFit.screenHeight * 0.8,
+            child: Container(
+              decoration: new BoxDecoration(
+                color: Colors.white,
+                borderRadius: new BorderRadius.only(
+                    topLeft: const Radius.circular(20.0),
+                    topRight: const Radius.circular(20.0)),
+              ),
+              child: FutureBuilder(
+                  future: getPetDetail(id),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text(snapshot.error.toString());
+                    } else {
+                      return Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Column(
+                          children: [
+                            Center(
+                              child: CustomText(
+                                  text: "Pet Detail",
+                                  size: 20,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Divider(),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: CircleAvatar(
+                                radius: 100,
+                                backgroundColor: Colors.white,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: Image(
+                                    //load image from network with error handler
+                                    image: NetworkImageWithRetry(
+                                        snapshot.data[0]["petImg"]),
+                                    errorBuilder:
+                                        (context, exception, stackTrack) =>
+                                            Icon(
+                                      Icons.error,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: CustomText(
+                                    text: "Name:",
+                                    size: 16,
+                                    color: ColorStyles.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: CustomText(
+                                    text: snapshot.data[0]["petName"],
+                                    size: 16,
+                                    color: ColorStyles.black,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: CustomText(
+                                    text: "Type:",
+                                    size: 16,
+                                    color: ColorStyles.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: CustomText(
+                                    text: snapshot.data[0]["type"],
+                                    size: 16,
+                                    color: ColorStyles.black,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: CustomText(
+                                    text: "Breed:",
+                                    size: 16,
+                                    color: ColorStyles.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: CustomText(
+                                    text: snapshot.data[0]["petBreed"],
+                                    size: 16,
+                                    color: ColorStyles.black,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: CustomText(
+                                    text: "Sex:",
+                                    size: 16,
+                                    color: ColorStyles.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: CustomText(
+                                    text: snapshot.data[0]["sex"],
+                                    size: 16,
+                                    color: ColorStyles.black,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: CustomText(
+                                    text: "Birthday/ Adoption day:",
+                                    size: 16,
+                                    color: ColorStyles.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: CustomText(
+                                    text: snapshot.data[0]["birthday"],
+                                    size: 16,
+                                    color: ColorStyles.black,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: CustomText(
+                                    text: "Weight:",
+                                    size: 16,
+                                    color: ColorStyles.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: CustomText(
+                                    text: snapshot.data[0]["petWeight"],
+                                    size: 16,
+                                    color: ColorStyles.black,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: CustomText(
+                                    text: "Description:",
+                                    size: 16,
+                                    color: ColorStyles.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: CustomText(
+                                    text: snapshot.data[0]["description"],
+                                    size: 16,
+                                    color: ColorStyles.black,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                  }),
+            ),
+          ),
+        );
+      },
     );
   }
 }

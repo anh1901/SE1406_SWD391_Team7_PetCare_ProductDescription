@@ -8,6 +8,7 @@ import 'package:flutter_image/network.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:petcare/caches/shared_storage.dart';
+import 'package:petcare/models/pet_services_model.dart';
 import 'package:petcare/models/store_model.dart';
 import 'package:petcare/redux/redux_state.dart';
 import 'package:petcare/screens/pets_screen/components/pet_services.dart';
@@ -30,8 +31,31 @@ final storeRef =
           fromFirestore: (snapshot, _) => StoreModel.fromJson(snapshot.data()),
           toFirestore: (store, _) => store.toJson(),
         );
+final storeDetailRef = (String id) => FirebaseFirestore.instance
+    .collection('stores')
+    .where("id", isEqualTo: id)
+    .withConverter<StoreModel>(
+      fromFirestore: (snapshot, _) => StoreModel.fromJson(snapshot.data()),
+      toFirestore: (store, _) => store.toJson(),
+    );
+final serviceRef = (String id) => FirebaseFirestore.instance
+    .collection('stores/$id/services')
+    .withConverter<PetServices>(
+      fromFirestore: (snapshot, _) => PetServices.fromJson(snapshot.data()),
+      toFirestore: (service, _) => service.toJson(),
+    );
+Future getServiceList(String id) async {
+  QuerySnapshot serviceDetail = (await serviceRef(id).get());
+  return serviceDetail.docs;
+}
+
 Future getListStore() async {
   QuerySnapshot storeList = (await storeRef.get());
+  return storeList.docs;
+}
+
+Future getStoreDetail(String id) async {
+  QuerySnapshot storeList = (await storeDetailRef(id).get());
   return storeList.docs;
 }
 
@@ -212,7 +236,8 @@ class _PetsScreenState extends State<PetsScreen> {
                                         ),
                                         child: GestureDetector(
                                           onTap: () {
-                                            //
+                                            showModal(context,
+                                                snapshot.data[index]["id"]);
                                           }, //view pet detail
                                           child: Padding(
                                             padding: const EdgeInsets.all(5.0),
@@ -404,5 +429,243 @@ class _PetsScreenState extends State<PetsScreen> {
         ),
       );
     });
+  }
+
+  void showModal(context, id) {
+    showModalBottomSheet<dynamic>(
+      context: context,
+      isScrollControlled: true,
+      enableDrag: true,
+      builder: (builder) {
+        return SingleChildScrollView(
+          physics: ScrollPhysics(),
+          child: Container(
+            color: Colors.grey[800],
+            height: SizeFit.screenHeight * 0.8,
+            child: Container(
+              decoration: new BoxDecoration(
+                color: Colors.white,
+                borderRadius: new BorderRadius.only(
+                    topLeft: const Radius.circular(20.0),
+                    topRight: const Radius.circular(20.0)),
+              ),
+              child: FutureBuilder(
+                  future: getStoreDetail(id),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text(snapshot.error.toString());
+                    } else {
+                      return Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Column(
+                          children: [
+                            Center(
+                              child: CustomText(
+                                  text: "Store Detail",
+                                  size: 20,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Divider(),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: CircleAvatar(
+                                radius: 100,
+                                backgroundColor: Colors.white,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: Image(
+                                    //load image from network with error handler
+                                    image: NetworkImageWithRetry(
+                                        snapshot.data[0]["imageUrl"]),
+                                    errorBuilder:
+                                        (context, exception, stackTrack) =>
+                                            Icon(
+                                      Icons.error,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: CustomText(
+                                    text: "Store Name:",
+                                    size: 16,
+                                    color: ColorStyles.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: CustomText(
+                                    text: snapshot.data[0]["storeName"],
+                                    size: 16,
+                                    color: ColorStyles.black,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: CustomText(
+                                    text: "Location:",
+                                    size: 16,
+                                    color: ColorStyles.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: CustomText(
+                                    text: snapshot.data[0]["location"],
+                                    size: 16,
+                                    color: ColorStyles.black,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: CustomText(
+                                    text: "Rate:",
+                                    size: 16,
+                                    color: ColorStyles.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: CustomText(
+                                    text: snapshot.data[0]["rate"].toString(),
+                                    size: 16,
+                                    color: ColorStyles.black,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: CustomText(
+                                    text: "Distance:",
+                                    size: 16,
+                                    color: ColorStyles.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: CustomText(
+                                    text: snapshot.data[0]["distance"]
+                                            .toString() +
+                                        " km",
+                                    size: 16,
+                                    color: ColorStyles.black,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: CustomText(
+                                    text: "Description:",
+                                    size: 16,
+                                    color: ColorStyles.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: CustomText(
+                                    text: snapshot.data[0]["description"]
+                                                .length ==
+                                            0
+                                        ? "None"
+                                        : snapshot.data[0]["description"],
+                                    size: 16,
+                                    color: ColorStyles.black,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: CustomText(
+                                    text: "Available services:",
+                                    size: 16,
+                                    color: ColorStyles.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            FutureBuilder(
+                              future: getServiceList(snapshot.data[0]["id"]),
+                              builder: (context, snapshot2) {
+                                if (snapshot2.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                } else if (snapshot2.hasError) {
+                                  return Text(snapshot2.error.toString());
+                                } else {
+                                  return ListView.builder(
+                                    physics: NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount: snapshot2.data.length,
+                                    itemBuilder: (_, index) {
+                                      return Row(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.all(5.0),
+                                            child: CustomText(
+                                              text: "   " +
+                                                  snapshot2.data[index]["name"],
+                                              size: 16,
+                                              color: ColorStyles.black,
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.all(5.0),
+                                            child: CustomText(
+                                              text:
+                                                  " - ${currency.format((snapshot2.data[index]["price"]))} đ",
+                                              size: 16,
+                                              color: ColorStyles.black,
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                }
+                              },
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                  }),
+            ),
+          ),
+        );
+      },
+    );
   }
 }
