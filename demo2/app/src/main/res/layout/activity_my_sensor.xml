@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MySensorActivity">
+
+    <TextView
+        android:id="@+id/txtSensors"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Hardware sensors"
+        android:gravity="center"
+        android:textStyle="bold"
+        />
+    <Button
+        android:id="@+id/btListAll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="List all sensors"
+        android:onClick="clickToListSensors"
+        />
+    <Button
+        android:id="@+id/btBaro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Barometer sensor"
+        android:onClick="clickToBarometer"
+        />
+    <Button
+        android:id="@+id/btCompass"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Compass sensor"
+        android:onClick="clickToCompass"
+        />
+    <Button
+        android:id="@+id/btAccelerometer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Accelerometer sensor"
+        android:onClick="clickToAccelerometer"
+        />
+<!--    <Button-->
+<!--        android:id="@+id/btProximity"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Proximity sensor"-->
+<!--        android:onClick="clickToProximity"-->
+<!--        />-->
+
+</LinearLayout>
