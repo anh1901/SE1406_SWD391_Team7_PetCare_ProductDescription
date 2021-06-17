@@ -21,7 +21,7 @@ public class MyPressActivity extends AppCompatActivity implements SensorEventLis
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        TextView txtValue =(TextView) findViewById(R.id.txtValue);
+        TextView txtValue = findViewById(R.id.txtValue);
         float[] value =event.values;
         txtValue.setText(value[0]+"");
     }
