@@ -73,7 +73,6 @@ public class MyBluetoothActivity extends AppCompatActivity implements AdapterVie
     };
 
     private final BroadcastReceiver mBroadcastReceiver2 = new BroadcastReceiver() {
-
         @Override
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
@@ -217,7 +216,7 @@ public class MyBluetoothActivity extends AppCompatActivity implements AdapterVie
     }
 
     //create method for starting connection
-//***remember the conncction will fail and app will crash if you haven't paired first
+    //***remember the connection will fail and app will crash if you haven't paired first
     public void startConnection(){
         startBTConnection(mBTDevice,MY_UUID_INSECURE);
     }

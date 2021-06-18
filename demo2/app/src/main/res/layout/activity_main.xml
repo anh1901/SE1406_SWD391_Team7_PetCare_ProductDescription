@@ -24,5 +24,21 @@
     android:gravity="center"
     android:onClick="clickToBluetooth"
     />
+    <Button
+        android:id="@+id/btCamera"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Camera"
+        android:gravity="center"
+        android:onClick="clickToCamera"
+        />
+    <Button
+        android:id="@+id/btCameraAPI"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Camera API"
+        android:gravity="center"
+        android:onClick="clickToCameraAPI"
+        />
 
 </LinearLayout>

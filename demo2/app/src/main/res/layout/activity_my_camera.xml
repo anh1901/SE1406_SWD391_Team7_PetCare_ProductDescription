@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MyCamera">
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Camera Demo"
+        android:textStyle="bold"
+        android:gravity="center"
+        />
+    <Button
+        android:id="@+id/btTake"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Take a picture"
+        android:gravity="center"
+        android:onClick="clickToTakePicture"
+        />
+    <ImageView
+        android:id="@+id/imgResult"
+        android:layout_width="fill_parent"
+        android:layout_height="150dp"
+        android:text="@drawable/ic_launcher"
+        />
+    <Button
+        android:id="@+id/btPhotoFile"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Take photo and store"
+        android:gravity="center"
+        android:onClick="clickToPhotoFile"
+        />
+    <Button
+        android:id="@+id/btVideo"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Capture a video"
+        android:gravity="center"
+        android:onClick="clickToVideo"
+        />
+    <VideoView
+        android:id="@+id/videoViewResult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+</LinearLayout>
