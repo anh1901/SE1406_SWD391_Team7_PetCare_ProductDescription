@@ -21,12 +21,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 
 public class MyBluetoothActivity extends AppCompatActivity implements AdapterView.OnItemClickListener{
     private static final String TAG = "MyBluetoothActivity";
-
     BluetoothAdapter mBluetoothAdapter;
     Button btnEnableDisable_Discoverable;
 
@@ -117,11 +117,16 @@ public class MyBluetoothActivity extends AppCompatActivity implements AdapterVie
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
             bluetoothStatus.setText( "onReceive: ACTION FOUND.");
-
+            if(BluetoothAdapter.ACTION_DISCOVERY_STARTED.equals(action)){
+                //clearing any existing list data
+                mBTDevices.clear();
+            }
             if (action.equals(BluetoothDevice.ACTION_FOUND)){
                 BluetoothDevice device = intent.getParcelableExtra (BluetoothDevice.EXTRA_DEVICE);
-                mBTDevices.add(device);
-                bluetoothStatus.setText( "onReceive: " + device.getName() + ": " + device.getAddress());
+                if(!mBTDevices.contains(device)){
+                    mBTDevices.add(device);
+                    bluetoothStatus.setText( "onReceive: " + device.getName() + ": " + device.getAddress());
+                }
                 mDeviceListAdapter = new DeviceListAdapter(context, R.layout.device_adapter_view, mBTDevices);
                 lvNewDevices.setAdapter(mDeviceListAdapter);
             }
@@ -141,7 +146,7 @@ public class MyBluetoothActivity extends AppCompatActivity implements AdapterVie
                 //3 cases:
                 //case1: bonded already
                 if (mDevice.getBondState() == BluetoothDevice.BOND_BONDED){
-                    bluetoothStatus.setText( "BroadcastReceiver: BOND_BONDED.");
+                    bluetoothStatus.setText( "BroadcastReceiver: BOND_BONDED to :"+mBTDevice.getName());
                     //inside BroadcastReceiver4
                     mBTDevice = mDevice;
                 }
@@ -167,7 +172,7 @@ public class MyBluetoothActivity extends AppCompatActivity implements AdapterVie
         unregisterReceiver(mBroadcastReceiver2);
         unregisterReceiver(mBroadcastReceiver3);
         unregisterReceiver(mBroadcastReceiver4);
-        //mBluetoothAdapter.cancelDiscovery();
+        mBluetoothAdapter.cancelDiscovery();
     }
 
     @Override
@@ -280,6 +285,7 @@ public class MyBluetoothActivity extends AppCompatActivity implements AdapterVie
             registerReceiver(mBroadcastReceiver3, discoverDevicesIntent);
         }
         if(!mBluetoothAdapter.isDiscovering()){
+            bluetoothStatus.setText( "btnDiscover: Discovering.");
             //check BT permissions in manifest
             checkBTPermissions();
             mBluetoothAdapter.startDiscovery();

@@ -28,7 +28,7 @@
         android:id="@+id/btCamera"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Camera"
+        android:text="Camera-(video not working)"
         android:gravity="center"
         android:onClick="clickToCamera"
         />
@@ -36,7 +36,7 @@
         android:id="@+id/btCameraAPI"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Camera API"
+        android:text="Camera API-Nothing working"
         android:gravity="center"
         android:onClick="clickToCameraAPI"
         />
