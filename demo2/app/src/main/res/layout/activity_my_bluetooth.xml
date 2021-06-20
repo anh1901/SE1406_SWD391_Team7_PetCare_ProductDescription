@@ -84,4 +84,11 @@
             android:maxLines="1"
             android:text="&lt;Bluetooth Status>" />
     </LinearLayout>
+<!--    <Button-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Send a file"-->
+<!--        android:id="@+id/btnTransfer"-->
+<!--        android:onClick="clickToTransfer"-->
+<!--        />-->
 </LinearLayout>

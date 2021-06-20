@@ -4,11 +4,14 @@ import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,6 +22,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.File;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +35,7 @@ public class MyBluetoothActivity extends AppCompatActivity implements AdapterVie
     Button btnEnableDisable_Discoverable;
 
     BluetoothConnectionService mBluetoothConnection;
-
+//    Button btnTransfer;
     Button btnStartConnection;
     Button btnSend;
     TextView bluetoothStatus;
@@ -164,6 +168,7 @@ public class MyBluetoothActivity extends AppCompatActivity implements AdapterVie
 
 
 
+
     @Override
     protected void onDestroy() {
         bluetoothStatus.setText( "onDestroy: called.");
@@ -187,7 +192,7 @@ public class MyBluetoothActivity extends AppCompatActivity implements AdapterVie
         btnStartConnection = (Button) findViewById(R.id.btnStartConnection);
         btnSend = (Button) findViewById(R.id.btnSend);
         etSend = (EditText) findViewById(R.id.editText);
-
+//        btnTransfer=(Button)findViewById(R.id.btnTransfer);
         //Broadcasts when bond state changes (ie:pairing)
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
         registerReceiver(mBroadcastReceiver4, filter);
@@ -214,6 +219,7 @@ public class MyBluetoothActivity extends AppCompatActivity implements AdapterVie
             @Override
             public void onClick(View view) {
                 byte[] bytes = etSend.getText().toString().getBytes(Charset.defaultCharset());
+                bluetoothStatus.setText("Sending:"+bytes);
                 mBluetoothConnection.write(bytes);
             }
         });
@@ -337,4 +343,22 @@ public class MyBluetoothActivity extends AppCompatActivity implements AdapterVie
         }
     }
 
+    public void clickToTransfer(View view) {
+        File sdCard= Environment.getExternalStorageDirectory();
+        String realPath=sdCard.getAbsolutePath();
+        Log.d("realpath",realPath);
+        File directory=new File(realPath+"/MyDBs");
+        File file=new File(directory,"soanbai.txt");
+        Log.d("file", file.exists()+"");
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        if(Build.VERSION.SDK_INT < 11){
+            intent.setPackage("com.android.bluetooth");
+        }else{
+            intent.setComponent(new ComponentName("com.android.bluetooth",
+                    "com.android.bluetooth.opp.BluetoothOppLauncherActivity"));
+        }
+        intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+        startActivity(intent);
+    }
 }
