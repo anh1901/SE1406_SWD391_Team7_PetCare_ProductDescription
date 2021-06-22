@@ -41,10 +41,8 @@ public class BluetoothConnectionService {
     private class AcceptThread extends Thread {
         // The local server socket
         private final BluetoothServerSocket mmServerSocket;
-
         public AcceptThread(){
             BluetoothServerSocket tmp = null;
-
             // Create a new listening server socket
             try{
                 tmp = mBluetoothAdapter.listenUsingInsecureRfcommWithServiceRecord(appName, MY_UUID_INSECURE);
@@ -66,7 +64,7 @@ public class BluetoothConnectionService {
                 // This is a blocking call and will only return on a
                 // successful connection or an exception
                 System.out.println( "run: RFCOM server socket start.....");
-
+                //Accept thread as Server
                 socket = mmServerSocket.accept();
 
                 System.out.println( "run: RFCOM server socket accepted connection.");

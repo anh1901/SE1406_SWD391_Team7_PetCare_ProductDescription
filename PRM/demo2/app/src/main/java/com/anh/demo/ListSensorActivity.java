@@ -23,7 +23,7 @@ public class ListSensorActivity extends AppCompatActivity {
         for(Sensor sensor : list){
             data.append("+ Name: "+ sensor.getName()+"\n");
             data.append("\t- Vendor: "+ sensor.getVendor()+"\n");
-            data.append("\t- Name: "+ sensor.getVersion()+"\n");
+            data.append("\t- Version: "+ sensor.getVersion()+"\n");
         }
         txt.setText(data);
     }

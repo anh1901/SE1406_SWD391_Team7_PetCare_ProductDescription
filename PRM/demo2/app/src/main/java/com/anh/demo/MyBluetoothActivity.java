@@ -57,7 +57,6 @@ public class MyBluetoothActivity extends AppCompatActivity implements AdapterVie
             // When discovery finds a device
             if (action.equals(mBluetoothAdapter.ACTION_STATE_CHANGED)) {
                 final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, mBluetoothAdapter.ERROR);
-
                 switch(state){
                     case BluetoothAdapter.STATE_OFF:
                         bluetoothStatus.setText( "onReceive: STATE OFF");
@@ -80,11 +79,8 @@ public class MyBluetoothActivity extends AppCompatActivity implements AdapterVie
         @Override
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
-
             if (action.equals(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED)) {
-
                 int mode = intent.getIntExtra(BluetoothAdapter.EXTRA_SCAN_MODE, BluetoothAdapter.ERROR);
-
                 switch (mode) {
                     //Device is in Discoverable Mode
                     case BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE:
@@ -166,18 +162,20 @@ public class MyBluetoothActivity extends AppCompatActivity implements AdapterVie
         }
     };
 
-
-
-
     @Override
     protected void onDestroy() {
         bluetoothStatus.setText( "onDestroy: called.");
         super.onDestroy();
-        unregisterReceiver(mBroadcastReceiver1);
-        unregisterReceiver(mBroadcastReceiver2);
-        unregisterReceiver(mBroadcastReceiver3);
-        unregisterReceiver(mBroadcastReceiver4);
-        mBluetoothAdapter.cancelDiscovery();
+        try{
+            unregisterReceiver(mBroadcastReceiver1);
+            unregisterReceiver(mBroadcastReceiver2);
+            unregisterReceiver(mBroadcastReceiver3);
+            unregisterReceiver(mBroadcastReceiver4);
+            //        mBluetoothAdapter.cancelDiscovery();
+        }catch (IllegalArgumentException e){
+            e.printStackTrace();
+        }
+
     }
 
     @Override
@@ -337,13 +335,13 @@ public class MyBluetoothActivity extends AppCompatActivity implements AdapterVie
         if(Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2){
             bluetoothStatus.setText( "Trying to pair with " + deviceName);
             mBTDevices.get(i).createBond();
-
             mBTDevice = mBTDevices.get(i);
             mBluetoothConnection = new BluetoothConnectionService(MyBluetoothActivity.this);
         }
     }
 
     public void clickToTransfer(View view) {
+        try{
         File sdCard= Environment.getExternalStorageDirectory();
         String realPath=sdCard.getAbsolutePath();
         Log.d("realpath",realPath);
@@ -360,5 +358,8 @@ public class MyBluetoothActivity extends AppCompatActivity implements AdapterVie
         }
         intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
         startActivity(intent);
+        }catch(IllegalArgumentException e){
+            e.printStackTrace();
+        }
     }
 }
