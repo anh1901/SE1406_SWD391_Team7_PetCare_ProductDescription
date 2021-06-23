@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -139,295 +140,336 @@ class _PetsScreenState extends State<PetsScreen> {
   Widget build(BuildContext context) {
     return StoreBuilder<ReduxState>(builder: (context, store) {
       return Scaffold(
-        body: SafeArea(
-          child: ListView(
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 45.0, top: 10.0),
-                    child: Row(
-                      children: [
-                        Text(
-                          AppLocalizations.of(context).hello,
-                          style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.grey,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          " User",
-                          style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.blue[200],
-                              fontWeight: FontWeight.bold),
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10, left: 12),
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.9,
-                      child: CustomText(
-                        text: AppLocalizations.of(context).petsScreenTitle,
-                        size: 18,
-                        color: ColorStyles.color_666666,
+          body: SafeArea(
+            child: ListView(
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 45.0, top: 10.0),
+                      child: Row(
+                        children: [
+                          Text(
+                            AppLocalizations.of(context).hello,
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.grey,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            " User",
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.blue[200],
+                                fontWeight: FontWeight.bold),
+                          )
+                        ],
                       ),
                     ),
-                  ),
-                ],
-              ),
-              PetServicesList(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10, left: 12),
-                    child: CustomText(
-                      text: AppLocalizations.of(context).stores,
-                      size: 22,
-                      color: ColorStyles.color_1a1a1a,
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10, left: 12),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        child: CustomText(
+                          text: AppLocalizations.of(context).petsScreenTitle,
+                          size: 18,
+                          color: ColorStyles.color_666666,
+                        ),
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              Container(
-                height: SizeFit.screenWidth / 1.6,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 5),
-                  child: FutureBuilder(
-                      future: getListStore(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
-                        return ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: snapshot.data.length,
-                            itemBuilder: (_, index) {
-                              if (snapshot.data.length == 0) {
-                                return Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: CustomText(
-                                      text: AppLocalizations.of(context)
-                                          .noStoreAvailable),
-                                );
-                              } else {
-                                return Padding(
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: Column(
-                                    children: <Widget>[
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: Colors.lightBlueAccent),
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                        ),
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            showModal(context,
-                                                snapshot.data[index]["id"]);
-                                          }, //view pet detail
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(5.0),
-                                            child: Container(
-                                              width: SizeFit.screenWidth * 0.8,
-                                              decoration: BoxDecoration(
-                                                  color: Colors.white,
-                                                  borderRadius:
-                                                      BorderRadius.circular(20),
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      color: Colors.blue[50],
-                                                      offset: Offset(4, 6),
-                                                      blurRadius: 20,
-                                                    ),
-                                                  ]),
-                                              padding: EdgeInsets.only(top: 8),
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(10.0),
-                                                child: Column(
-                                                  children: [
-                                                    SizedBox(
-                                                      child: Image(
-                                                        //load image from network with error handler
-                                                        image:
-                                                            NetworkImageWithRetry(
-                                                                snapshot.data[
-                                                                        index][
-                                                                    "imageUrl"]),
-                                                        errorBuilder: (context,
-                                                                exception,
-                                                                stackTrack) =>
-                                                            Icon(
-                                                          Icons.error,
-                                                        ),
+                  ],
+                ),
+                PetServicesList(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10, left: 12),
+                      child: CustomText(
+                        text: AppLocalizations.of(context).stores,
+                        size: 22,
+                        color: ColorStyles.color_1a1a1a,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: GestureDetector(
+                        onTap: () {},
+                        child: CustomText(
+                          text: "View more",
+                          color: ColorStyles.main_color,
+                          size: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Container(
+                  height: SizeFit.screenWidth / 1.6,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 5),
+                    child: FutureBuilder(
+                        future: getListStore(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                          return ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: snapshot.data.length,
+                              itemBuilder: (_, index) {
+                                if (snapshot.data.length == 0) {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: CustomText(
+                                        text: AppLocalizations.of(context)
+                                            .noStoreAvailable),
+                                  );
+                                } else {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(5.0),
+                                    child: Column(
+                                      children: <Widget>[
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: Colors.lightBlueAccent),
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                          ),
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              showModal(context,
+                                                  snapshot.data[index]["id"]);
+                                            }, //view pet detail
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(5.0),
+                                              child: Container(
+                                                width:
+                                                    SizeFit.screenWidth * 0.8,
+                                                decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20),
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                        color: Colors.blue[50],
+                                                        offset: Offset(4, 6),
+                                                        blurRadius: 20,
                                                       ),
-                                                      height: SizeConfig
-                                                              .screenHeight /
-                                                          8,
-                                                    ),
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        CustomText(
-                                                          text: snapshot
-                                                                  .data[index]
-                                                              ["storeName"],
-                                                          size: 20,
-                                                          color: ColorStyles
-                                                              .color_333333,
+                                                    ]),
+                                                padding:
+                                                    EdgeInsets.only(top: 8),
+                                                child: Padding(
+                                                  padding: const EdgeInsets.all(
+                                                      10.0),
+                                                  child: Column(
+                                                    children: [
+                                                      SizedBox(
+                                                        child: Image(
+                                                          //load image from network with error handler
+                                                          image: NetworkImageWithRetry(
+                                                              snapshot.data[
+                                                                      index]
+                                                                  ["imageUrl"]),
+                                                          errorBuilder: (context,
+                                                                  exception,
+                                                                  stackTrack) =>
+                                                              Icon(
+                                                            Icons.error,
+                                                          ),
                                                         ),
-                                                      ],
-                                                    ),
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Container(
-                                                          constraints:
-                                                              new BoxConstraints(
-                                                                  maxWidth:
-                                                                      SizeFit.screenWidth *
-                                                                          0.7),
-                                                          child: CustomText(
-                                                              size: 14,
-                                                              text:
-                                                                  "${snapshot.data[index]["location"]}"),
-                                                        ),
-                                                        CustomText(
-                                                          text:
-                                                              " ${snapshot.data[index]["distance"].toString()}" +
-                                                                  " km",
-                                                          size: 16,
-                                                          color: Colors.grey,
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        CustomText(
-                                                          text: snapshot
-                                                              .data[index]
-                                                                  ["rate"]
-                                                              .toString(),
-                                                          size: 16,
-                                                          color: Colors.black,
-                                                        ),
-                                                        Icon(
-                                                          Icons.star,
-                                                          color: Colors.yellow,
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
+                                                        height: SizeConfig
+                                                                .screenHeight /
+                                                            8,
+                                                      ),
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          CustomText(
+                                                            text: snapshot
+                                                                    .data[index]
+                                                                ["storeName"],
+                                                            size: 20,
+                                                            color: ColorStyles
+                                                                .color_333333,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Container(
+                                                            constraints:
+                                                                new BoxConstraints(
+                                                                    maxWidth:
+                                                                        SizeFit.screenWidth *
+                                                                            0.7),
+                                                            child: CustomText(
+                                                                size: 14,
+                                                                text:
+                                                                    "${snapshot.data[index]["location"]}"),
+                                                          ),
+                                                          CustomText(
+                                                            text:
+                                                                " ${snapshot.data[index]["distance"].toString()}" +
+                                                                    " km",
+                                                            size: 16,
+                                                            color: Colors.grey,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          CustomText(
+                                                            text: snapshot
+                                                                .data[index]
+                                                                    ["rate"]
+                                                                .toString(),
+                                                            size: 16,
+                                                            color: Colors.black,
+                                                          ),
+                                                          Icon(
+                                                            Icons.star,
+                                                            color:
+                                                                Colors.yellow,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              }
-                            });
-                      }),
+                                      ],
+                                    ),
+                                  );
+                                }
+                              });
+                        }),
+                  ),
                 ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10, left: 12),
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.8,
-                      child: Row(
-                        children: [
-                          CustomText(
-                            text: AppLocalizations.of(context).petsAppointment,
-                            size: 22,
-                            color: ColorStyles.color_1a1a1a,
-                          ),
-                        ],
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10, left: 12),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CustomText(
+                              text:
+                                  AppLocalizations.of(context).petsAppointment,
+                              size: 22,
+                              color: ColorStyles.color_1a1a1a,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: GestureDetector(
+                                onTap: () {},
+                                child: CustomText(
+                                  text: "View all",
+                                  color: ColorStyles.main_color,
+                                  size: 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  Padding(
-                    // key: isTutorial ? null : _appointmentKey,
-                    padding: const EdgeInsets.only(top: 10, right: 12),
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            PageTransition(
-                                type: PageTransitionType.bottomToTop,
-                                child: MapScreen()));
-                      },
-                      child: Icon(
-                        Icons.add_circle,
-                        size: 40,
-                        color: ColorStyles.main_color,
+                  ],
+                ),
+                PetAppointment(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10, left: 12),
+                      child: CustomText(
+                        text: AppLocalizations.of(context).myPets,
+                        size: 22,
+                        color: ColorStyles.color_1a1a1a,
                       ),
                     ),
-                  ),
-                ],
-              ),
-              PetAppointment(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10, left: 12),
-                    child: CustomText(
-                      text: AppLocalizations.of(context).myPets,
-                      size: 22,
-                      color: ColorStyles.color_1a1a1a,
-                    ),
-                  ),
-                  Padding(
-                    //key: isTutorial ? null : _petsKey,
-                    padding: const EdgeInsets.only(top: 10, right: 12),
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            PageTransition(
-                                type: PageTransitionType.bottomToTop,
-                                child: CreatePetScreen()));
-                      },
-                      child: Icon(
-                        Icons.add_circle,
-                        size: 40,
-                        color: ColorStyles.main_color,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              PetList(),
-            ],
+                  ],
+                ),
+                PetList(),
+              ],
+            ),
           ),
-        ),
-      );
+          floatingActionButton: FabCircularMenu(
+              alignment: Alignment.bottomCenter,
+              ringColor: Colors.grey.withAlpha(50),
+              ringDiameter: 450,
+              ringWidth: 150.0,
+              fabSize: 44.0,
+              fabElevation: 10.0,
+              fabIconBorder: CircleBorder(),
+              fabOpenColor: Colors.grey,
+              fabCloseColor: ColorStyles.main_color,
+              fabColor: Colors.white,
+              fabOpenIcon: Icon(Icons.add, color: ColorStyles.white),
+              fabCloseIcon: Icon(Icons.close, color: ColorStyles.white),
+              fabMargin: const EdgeInsets.all(5.0),
+              animationDuration: const Duration(milliseconds: 800),
+              animationCurve: Curves.bounceInOut,
+              children: <Widget>[
+                FloatingActionButton.extended(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        PageTransition(
+                            type: PageTransitionType.bottomToTop,
+                            child: CreatePetScreen()));
+                  },
+                  icon: Icon(
+                    Icons.pets,
+                    size: 40,
+                    color: ColorStyles.white,
+                  ),
+                  label: Text("Add pet"),
+                ),
+                FloatingActionButton.extended(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        PageTransition(
+                            type: PageTransitionType.bottomToTop,
+                            child: MapScreen()));
+                  },
+                  icon: Icon(
+                    Icons.book_outlined,
+                    size: 40,
+                    color: ColorStyles.white,
+                  ),
+                  label: Text("Book now"),
+                ),
+              ]));
     });
   }
 
