@@ -609,6 +609,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
         selectedType: selectedType,
         totalPrice: totalPrice,
         paymentMethod: selectedMethod,
+        status: "alive",
       ),
     )
         .then((value) {
@@ -616,6 +617,10 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
           .collection('appointments')
           .doc(value.id)
           .update({"id": value.id});
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(uid)
+          .set({"lastLocation": currentAddress}, SetOptions(merge: true));
     });
   }
 }

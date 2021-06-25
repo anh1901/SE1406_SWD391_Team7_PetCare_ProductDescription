@@ -3,14 +3,17 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:petcare/models/appointment_model.dart';
 import 'package:petcare/models/pet_model.dart';
 import 'package:petcare/models/pet_services_model.dart';
 import 'package:petcare/models/store_model.dart';
 import 'package:petcare/models/user.dart';
+import 'package:petcare/screens/basic_screen/basic_screen.dart';
 import 'package:petcare/widgets/app_size.dart';
 import 'package:petcare/widgets/commons.dart';
 import 'package:petcare/widgets/custom_text.dart';
+import 'package:petcare/widgets/toast.dart';
 
 final Map<String, String> serviceTypes = {
   'Pickup': 'Đến đón',
@@ -37,6 +40,7 @@ int selectedIndex;
 final appointmentRef = FirebaseFirestore.instance
     .collection('appointments')
     .where("userId", isEqualTo: uid)
+    .where("status", isEqualTo: "alive")
     .withConverter<AppointmentModel>(
       fromFirestore: (snapshot, _) =>
           AppointmentModel.fromJson(snapshot.data()),
@@ -53,12 +57,14 @@ final appointmentDetailRef = (String id) => FirebaseFirestore.instance
 final storeRef = (String id) => FirebaseFirestore.instance
     .collection('stores')
     .where("id", isEqualTo: id)
+    .where("status", isEqualTo: "alive")
     .withConverter<StoreModel>(
       fromFirestore: (snapshot, _) => StoreModel.fromJson(snapshot.data()),
       toFirestore: (store, _) => store.toJson(),
     );
 final serviceRef = (String id) => FirebaseFirestore.instance
     .collection('stores/$id/services')
+    .where("status", isEqualTo: "alive")
     .withConverter<PetServices>(
       fromFirestore: (snapshot, _) => PetServices.fromJson(snapshot.data()),
       toFirestore: (service, _) => service.toJson(),
@@ -73,6 +79,7 @@ final userRef = (String id) => FirebaseFirestore.instance
 final petRef = (String id, String petId) => FirebaseFirestore.instance
     .collection('users/$id/pets')
     .where("id", isEqualTo: petId)
+    .where("status", isEqualTo: "alive")
     .withConverter<PetModel>(
       fromFirestore: (snapshot, _) => PetModel.fromJson(snapshot.data()),
       toFirestore: (user, _) => user.toJson(),
@@ -99,8 +106,8 @@ Future getServiceList(String id) async {
 }
 
 Future getUserDetail(String id) async {
-  QuerySnapshot petDetail = (await userRef(id).get());
-  return petDetail.docs;
+  QuerySnapshot userDetail = (await userRef(id).get());
+  return userDetail.docs;
 }
 
 Future getPetDetail(String id, String petId) async {
@@ -115,7 +122,7 @@ class PetAppointment extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Container(
-          height: SizeFit.screenHeight / 5,
+          height: SizeFit.screenHeight / 5.5,
           width: SizeFit.screenWidth * 0.9,
           child: FutureBuilder(
             future: getListAppointments(),
@@ -140,6 +147,7 @@ class PetAppointment extends StatelessWidget {
                 return ListView.builder(
                   scrollDirection: Axis.vertical,
                   itemCount: snapshot.data.length,
+                  physics: BouncingScrollPhysics(),
                   itemBuilder: (_, index) {
                     return Padding(
                       padding: const EdgeInsets.all(5.0),
@@ -281,7 +289,7 @@ class PetAppointment extends StatelessWidget {
                   } else {
                     return Padding(
                       padding: const EdgeInsets.all(10.0),
-                      child: Column(
+                      child: ListView(
                         children: <Widget>[
                           FutureBuilder(
                             future: getStoreDetail(snapshot.data[0]["storeId"]),
@@ -398,6 +406,7 @@ class PetAppointment extends StatelessWidget {
                                                             ["name"],
                                                     size: 16,
                                                     color: ColorStyles.black,
+                                                    fontWeight: FontWeight.bold,
                                                   ),
                                                 );
                                               }
@@ -580,6 +589,31 @@ class PetAppointment extends StatelessWidget {
                                     fontWeight: FontWeight.bold),
                               ),
                             ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: FloatingActionButton.extended(
+                              onPressed: () {
+                                FirebaseFirestore.instance
+                                    .collection('appointments')
+                                    .doc(snapshot.data[0]["id"])
+                                    .update({"status": "removed"});
+                                Navigator.pop(context);
+                                Navigator.push(
+                                    context,
+                                    PageTransition(
+                                        type: PageTransitionType.bottomToTop,
+                                        child: BasicScreen()));
+                                Toast.showSuccess("Canceled.");
+                              },
+                              backgroundColor: Colors.red,
+                              icon: Icon(
+                                Icons.cancel_rounded,
+                                size: 40,
+                                color: ColorStyles.white,
+                              ),
+                              label: Text("Cancel Appointment"),
+                            ),
                           ),
                         ],
                       ),

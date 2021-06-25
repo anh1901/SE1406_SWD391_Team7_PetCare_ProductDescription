@@ -14,6 +14,7 @@ class StoreModel {
   double distance;
   double rate;
   String description;
+  String status;
 
   StoreModel({
     this.id,
@@ -24,6 +25,7 @@ class StoreModel {
     this.distance,
     this.rate,
     this.description,
+    this.status,
   });
 
   factory StoreModel.fromJson(Map<String, dynamic> json) => StoreModel(
@@ -35,6 +37,7 @@ class StoreModel {
         distance: json["distance"],
         rate: json["rate"],
         description: json["description"],
+        status: json["status"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -46,5 +49,6 @@ class StoreModel {
         "distance": distance,
         "rate": rate,
         "description": description,
+        "status": status,
       };
 }

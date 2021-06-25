@@ -19,6 +19,7 @@ class PetModel {
   String petWeight;
   String description;
   String type;
+  String status;
 
   PetModel({
     this.id,
@@ -30,6 +31,7 @@ class PetModel {
     this.petWeight,
     this.description,
     this.type,
+    this.status,
   });
 
   factory PetModel.fromJson(Map<String, dynamic> json) => PetModel(
@@ -42,6 +44,7 @@ class PetModel {
         petWeight: json["petWeight"],
         type: json["type"],
         description: json["description"],
+        status: json["status"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -54,5 +57,6 @@ class PetModel {
         "petWeight": petWeight,
         "type": type,
         "description": description,
+        "status": status,
       };
 }

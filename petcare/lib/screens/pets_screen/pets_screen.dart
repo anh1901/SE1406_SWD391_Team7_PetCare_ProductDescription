@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_image/network.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:petcare/caches/shared_storage.dart';
 import 'package:petcare/models/pet_services_model.dart';
@@ -19,19 +20,23 @@ import 'package:petcare/widgets/custom_text.dart';
 import 'package:petcare/widgets/size_config.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+import 'components/add_appointment/book_service_screen.dart';
 import 'components/add_appointment/map_screen.dart';
 import 'components/pet_appointment.dart';
 import 'components/pet_list.dart';
 import 'create_pet.dart';
 
+final currency = new NumberFormat("#,##0", "vi_VN");
 final FirebaseAuth auth = FirebaseAuth.instance;
 final User user = auth.currentUser;
 final uid = (user == null) ? "YA0MCREEIsG4U8bUtyXQ" : user.uid;
-final storeRef =
-    FirebaseFirestore.instance.collection('stores').withConverter<StoreModel>(
-          fromFirestore: (snapshot, _) => StoreModel.fromJson(snapshot.data()),
-          toFirestore: (store, _) => store.toJson(),
-        );
+final storeRef = FirebaseFirestore.instance
+    .collection('stores')
+    .where("status", isEqualTo: "alive")
+    .withConverter<StoreModel>(
+      fromFirestore: (snapshot, _) => StoreModel.fromJson(snapshot.data()),
+      toFirestore: (store, _) => store.toJson(),
+    );
 final storeDetailRef = (String id) => FirebaseFirestore.instance
     .collection('stores')
     .where("id", isEqualTo: id)
@@ -41,10 +46,12 @@ final storeDetailRef = (String id) => FirebaseFirestore.instance
     );
 final serviceRef = (String id) => FirebaseFirestore.instance
     .collection('stores/$id/services')
+    .where("status", isEqualTo: "alive")
     .withConverter<PetServices>(
       fromFirestore: (snapshot, _) => PetServices.fromJson(snapshot.data()),
       toFirestore: (service, _) => service.toJson(),
     );
+
 Future getServiceList(String id) async {
   QuerySnapshot serviceDetail = (await serviceRef(id).get());
   return serviceDetail.docs;
@@ -71,6 +78,7 @@ class _PetsScreenState extends State<PetsScreen> {
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
   final isTutorial = SharedStorage.showTutorial;
+  final scrollController = ScrollController();
   // GlobalKey _appointmentKey = GlobalObjectKey("appointmentKey");
   // GlobalKey _petsKey = GlobalObjectKey("petKey");
   @override
@@ -142,7 +150,10 @@ class _PetsScreenState extends State<PetsScreen> {
       return Scaffold(
           body: SafeArea(
             child: ListView(
-              children: <Widget>[
+              scrollDirection: Axis.vertical,
+              physics: BouncingScrollPhysics(),
+              controller: scrollController,
+              children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -157,13 +168,18 @@ class _PetsScreenState extends State<PetsScreen> {
                                 color: Colors.grey,
                                 fontWeight: FontWeight.bold),
                           ),
-                          Text(
-                            " User",
-                            style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.blue[200],
-                                fontWeight: FontWeight.bold),
-                          )
+                          FutureBuilder(
+                            future: getUserDetail(uid),
+                            builder: (context, snapshot) {
+                              return Text(
+                                " " + snapshot.data[0]["username"],
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.blue[200],
+                                    fontWeight: FontWeight.bold),
+                              );
+                            },
+                          ),
                         ],
                       ),
                     ),
@@ -223,150 +239,159 @@ class _PetsScreenState extends State<PetsScreen> {
                             return Center(
                               child: CircularProgressIndicator(),
                             );
-                          }
-                          return ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: snapshot.data.length,
-                              itemBuilder: (_, index) {
-                                if (snapshot.data.length == 0) {
-                                  return Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: CustomText(
-                                        text: AppLocalizations.of(context)
-                                            .noStoreAvailable),
-                                  );
-                                } else {
-                                  return Padding(
-                                    padding: const EdgeInsets.all(5.0),
-                                    child: Column(
-                                      children: <Widget>[
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: Colors.lightBlueAccent),
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                          ),
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              showModal(context,
-                                                  snapshot.data[index]["id"]);
-                                            }, //view pet detail
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(5.0),
-                                              child: Container(
-                                                width:
-                                                    SizeFit.screenWidth * 0.8,
-                                                decoration: BoxDecoration(
-                                                    color: Colors.white,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20),
-                                                    boxShadow: [
-                                                      BoxShadow(
-                                                        color: Colors.blue[50],
-                                                        offset: Offset(4, 6),
-                                                        blurRadius: 20,
-                                                      ),
-                                                    ]),
+                          } else {
+                            return ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                physics: BouncingScrollPhysics(),
+                                itemCount: snapshot.data.length,
+                                shrinkWrap: true,
+                                itemBuilder: (_, index) {
+                                  if (snapshot.data.length == 0) {
+                                    return Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: CustomText(
+                                          text: AppLocalizations.of(context)
+                                              .noStoreAvailable),
+                                    );
+                                  } else {
+                                    return Padding(
+                                      padding: const EdgeInsets.all(5.0),
+                                      child: Column(
+                                        children: <Widget>[
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color:
+                                                      Colors.lightBlueAccent),
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                            ),
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                showModal(context,
+                                                    snapshot.data[index]["id"]);
+                                              }, //view pet detail
+                                              child: Padding(
                                                 padding:
-                                                    EdgeInsets.only(top: 8),
-                                                child: Padding(
-                                                  padding: const EdgeInsets.all(
-                                                      10.0),
-                                                  child: Column(
-                                                    children: [
-                                                      SizedBox(
-                                                        child: Image(
-                                                          //load image from network with error handler
-                                                          image: NetworkImageWithRetry(
-                                                              snapshot.data[
-                                                                      index]
-                                                                  ["imageUrl"]),
-                                                          errorBuilder: (context,
-                                                                  exception,
-                                                                  stackTrack) =>
-                                                              Icon(
-                                                            Icons.error,
-                                                          ),
+                                                    const EdgeInsets.all(5.0),
+                                                child: Container(
+                                                  width:
+                                                      SizeFit.screenWidth * 0.8,
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.white,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20),
+                                                      boxShadow: [
+                                                        BoxShadow(
+                                                          color:
+                                                              Colors.blue[50],
+                                                          offset: Offset(4, 6),
+                                                          blurRadius: 20,
                                                         ),
-                                                        height: SizeConfig
-                                                                .screenHeight /
-                                                            8,
-                                                      ),
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          CustomText(
-                                                            text: snapshot
-                                                                    .data[index]
-                                                                ["storeName"],
-                                                            size: 20,
-                                                            color: ColorStyles
-                                                                .color_333333,
+                                                      ]),
+                                                  padding:
+                                                      EdgeInsets.only(top: 8),
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            10.0),
+                                                    child: Column(
+                                                      children: [
+                                                        SizedBox(
+                                                          child: Image(
+                                                            //load image from network with error handler
+                                                            image: NetworkImageWithRetry(
+                                                                snapshot.data[
+                                                                        index][
+                                                                    "imageUrl"]),
+                                                            errorBuilder: (context,
+                                                                    exception,
+                                                                    stackTrack) =>
+                                                                Icon(
+                                                              Icons.error,
+                                                            ),
                                                           ),
-                                                        ],
-                                                      ),
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Container(
-                                                            constraints:
-                                                                new BoxConstraints(
-                                                                    maxWidth:
-                                                                        SizeFit.screenWidth *
-                                                                            0.7),
-                                                            child: CustomText(
-                                                                size: 14,
-                                                                text:
-                                                                    "${snapshot.data[index]["location"]}"),
-                                                          ),
-                                                          CustomText(
-                                                            text:
-                                                                " ${snapshot.data[index]["distance"].toString()}" +
-                                                                    " km",
-                                                            size: 16,
-                                                            color: Colors.grey,
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          CustomText(
-                                                            text: snapshot
-                                                                .data[index]
-                                                                    ["rate"]
-                                                                .toString(),
-                                                            size: 16,
-                                                            color: Colors.black,
-                                                          ),
-                                                          Icon(
-                                                            Icons.star,
-                                                            color:
-                                                                Colors.yellow,
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ],
+                                                          height: SizeConfig
+                                                                  .screenHeight /
+                                                              8,
+                                                        ),
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            CustomText(
+                                                              text: snapshot
+                                                                          .data[
+                                                                      index]
+                                                                  ["storeName"],
+                                                              size: 20,
+                                                              color: ColorStyles
+                                                                  .color_333333,
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Container(
+                                                              constraints:
+                                                                  new BoxConstraints(
+                                                                      maxWidth:
+                                                                          SizeFit.screenWidth *
+                                                                              0.7),
+                                                              child: CustomText(
+                                                                  size: 14,
+                                                                  text:
+                                                                      "${snapshot.data[index]["location"]}"),
+                                                            ),
+                                                            CustomText(
+                                                              text:
+                                                                  " ${snapshot.data[index]["distance"].toString()}" +
+                                                                      " km",
+                                                              size: 16,
+                                                              color:
+                                                                  Colors.grey,
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            CustomText(
+                                                              text: snapshot
+                                                                  .data[index]
+                                                                      ["rate"]
+                                                                  .toString(),
+                                                              size: 16,
+                                                              color:
+                                                                  Colors.black,
+                                                            ),
+                                                            Icon(
+                                                              Icons.star,
+                                                              color:
+                                                                  Colors.yellow,
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                }
-                              });
+                                        ],
+                                      ),
+                                    );
+                                  }
+                                });
+                          }
                         }),
                   ),
                 ),
@@ -419,6 +444,19 @@ class _PetsScreenState extends State<PetsScreen> {
                   ],
                 ),
                 PetList(),
+                Container(
+                  alignment: Alignment.bottomRight,
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 5.0, bottom: 10.0),
+                    child: FloatingActionButton(
+                      onPressed: () {
+                        scrollToTop();
+                      },
+                      child: const Icon(Icons.keyboard_arrow_up),
+                      backgroundColor: Colors.lightBlueAccent,
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -473,6 +511,11 @@ class _PetsScreenState extends State<PetsScreen> {
     });
   }
 
+  void scrollToTop() {
+    scrollController.animateTo(0,
+        duration: Duration(seconds: 1), curve: Curves.linear);
+  }
+
   void showModal(context, id) {
     showModalBottomSheet<dynamic>(
       context: context,
@@ -492,218 +535,276 @@ class _PetsScreenState extends State<PetsScreen> {
                     topRight: const Radius.circular(20.0)),
               ),
               child: FutureBuilder(
-                  future: getStoreDetail(id),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    } else if (snapshot.hasError) {
-                      return Text(snapshot.error.toString());
-                    } else {
-                      return Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Column(
-                          children: [
-                            Center(
-                              child: CustomText(
-                                  text: "Store Detail",
-                                  size: 20,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            Divider(),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: CircleAvatar(
-                                radius: 100,
-                                backgroundColor: Colors.white,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(20),
-                                  child: Image(
-                                    //load image from network with error handler
-                                    image: NetworkImageWithRetry(
-                                        snapshot.data[0]["imageUrl"]),
-                                    errorBuilder:
-                                        (context, exception, stackTrack) =>
-                                            Icon(
-                                      Icons.error,
-                                    ),
+                future: getStoreDetail(id),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (snapshot.hasError) {
+                    return Text(snapshot.error.toString());
+                  } else {
+                    return Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: ListView(
+                        children: [
+                          Center(
+                            child: CustomText(
+                                text: "Store Detail",
+                                size: 20,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          Divider(),
+                          Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: CircleAvatar(
+                              radius: 100,
+                              backgroundColor: Colors.white,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(20),
+                                child: Image(
+                                  //load image from network with error handler
+                                  image: NetworkImageWithRetry(
+                                      snapshot.data[0]["imageUrl"]),
+                                  errorBuilder:
+                                      (context, exception, stackTrack) => Icon(
+                                    Icons.error,
                                   ),
                                 ),
                               ),
                             ),
-                            Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: CustomText(
-                                    text: "Store Name:",
-                                    size: 16,
-                                    color: ColorStyles.black,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                          ),
+                          Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: CustomText(
+                                  text: "Store Name:",
+                                  size: 16,
+                                  color: ColorStyles.black,
+                                  fontWeight: FontWeight.bold,
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: CustomText(
-                                    text: snapshot.data[0]["storeName"],
-                                    size: 16,
-                                    color: ColorStyles.black,
-                                  ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: CustomText(
+                                  text: snapshot.data[0]["storeName"],
+                                  size: 16,
+                                  color: ColorStyles.black,
                                 ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: CustomText(
-                                    text: "Location:",
-                                    size: 16,
-                                    color: ColorStyles.black,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: CustomText(
+                                  text: "Location:",
+                                  size: 16,
+                                  color: ColorStyles.black,
+                                  fontWeight: FontWeight.bold,
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: CustomText(
-                                    text: snapshot.data[0]["location"],
-                                    size: 16,
-                                    color: ColorStyles.black,
-                                  ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: CustomText(
+                                  text: snapshot.data[0]["location"],
+                                  size: 16,
+                                  color: ColorStyles.black,
                                 ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: CustomText(
-                                    text: "Rate:",
-                                    size: 16,
-                                    color: ColorStyles.black,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: CustomText(
+                                  text: "Rate:",
+                                  size: 16,
+                                  color: ColorStyles.black,
+                                  fontWeight: FontWeight.bold,
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: CustomText(
-                                    text: snapshot.data[0]["rate"].toString(),
-                                    size: 16,
-                                    color: ColorStyles.black,
-                                  ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: Row(
+                                  children: [
+                                    CustomText(
+                                      text: snapshot.data[0]["rate"].toString(),
+                                      size: 16,
+                                      color: ColorStyles.black,
+                                    ),
+                                    Icon(Icons.star, color: Colors.yellow),
+                                  ],
                                 ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: CustomText(
-                                    text: "Distance:",
-                                    size: 16,
-                                    color: ColorStyles.black,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: CustomText(
+                                  text: "Distance:",
+                                  size: 16,
+                                  color: ColorStyles.black,
+                                  fontWeight: FontWeight.bold,
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: CustomText(
-                                    text: snapshot.data[0]["distance"]
-                                            .toString() +
-                                        " km",
-                                    size: 16,
-                                    color: ColorStyles.black,
-                                  ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: CustomText(
+                                  text:
+                                      snapshot.data[0]["distance"].toString() +
+                                          " km",
+                                  size: 16,
+                                  color: ColorStyles.black,
                                 ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: CustomText(
-                                    text: "Description:",
-                                    size: 16,
-                                    color: ColorStyles.black,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: CustomText(
+                                  text: "Description:",
+                                  size: 16,
+                                  color: ColorStyles.black,
+                                  fontWeight: FontWeight.bold,
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: CustomText(
-                                    text: snapshot.data[0]["description"]
-                                                .length ==
-                                            0
-                                        ? "None"
-                                        : snapshot.data[0]["description"],
-                                    size: 16,
-                                    color: ColorStyles.black,
-                                  ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: CustomText(
+                                  text:
+                                      snapshot.data[0]["description"].length ==
+                                              0
+                                          ? "None"
+                                          : snapshot.data[0]["description"],
+                                  size: 16,
+                                  color: ColorStyles.black,
                                 ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: CustomText(
-                                    text: "Available services:",
-                                    size: 16,
-                                    color: ColorStyles.black,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: CustomText(
+                                  text: "Available services:",
+                                  size: 16,
+                                  color: ColorStyles.black,
+                                  fontWeight: FontWeight.bold,
                                 ),
-                              ],
-                            ),
-                            FutureBuilder(
-                              future: getServiceList(snapshot.data[0]["id"]),
-                              builder: (context, snapshot2) {
-                                if (snapshot2.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return Center(
-                                    child: CircularProgressIndicator(),
-                                  );
-                                } else if (snapshot2.hasError) {
-                                  return Text(snapshot2.error.toString());
-                                } else {
-                                  return ListView.builder(
-                                    physics: NeverScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    itemCount: snapshot2.data.length,
-                                    itemBuilder: (_, index) {
-                                      return Row(
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.all(5.0),
-                                            child: CustomText(
-                                              text: "   " +
-                                                  snapshot2.data[index]["name"],
-                                              size: 16,
-                                              color: ColorStyles.black,
-                                            ),
+                              ),
+                            ],
+                          ),
+                          FutureBuilder(
+                            future: getServiceList(snapshot.data[0]["id"]),
+                            builder: (context, snapshot2) {
+                              if (snapshot2.connectionState ==
+                                  ConnectionState.waiting) {
+                                return Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              } else if (snapshot2.hasError) {
+                                return Text(snapshot2.error.toString());
+                              } else {
+                                return ListView.builder(
+                                  physics: NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: snapshot2.data.length,
+                                  itemBuilder: (_, index) {
+                                    return Row(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(5.0),
+                                          child: CustomText(
+                                            text: "   " +
+                                                snapshot2.data[index]["name"],
+                                            size: 16,
+                                            color: ColorStyles.black,
                                           ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(5.0),
-                                            child: CustomText(
-                                              text:
-                                                  " - ${currency.format((snapshot2.data[index]["price"]))} đ",
-                                              size: 16,
-                                              color: ColorStyles.black,
-                                            ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(5.0),
+                                          child: CustomText(
+                                            text:
+                                                " - ${currency.format((snapshot2.data[index]["price"]))} đ",
+                                            size: 16,
+                                            color: ColorStyles.black,
                                           ),
-                                        ],
-                                      );
-                                    },
-                                  );
-                                }
-                              },
-                            ),
-                          ],
-                        ),
-                      );
-                    }
-                  }),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              }
+                            },
+                          ),
+                          FutureBuilder(
+                              future: getUserDetail(uid),
+                              builder: (context, snapshotUser) {
+                                return (snapshotUser.data[0]["lastLocation"] !=
+                                        "")
+                                    ? (Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: FloatingActionButton.extended(
+                                          onPressed: () {
+                                            Navigator.push(
+                                                context,
+                                                PageTransition(
+                                                    type: PageTransitionType
+                                                        .bottomToTop,
+                                                    child: BookServiceScreen(
+                                                        currentAddress:
+                                                            snapshotUser.data[0]
+                                                                [
+                                                                "lastLocation"],
+                                                        currentStore: snapshot
+                                                            .data[0]["id"],
+                                                        storeName: snapshot
+                                                                .data[0]
+                                                            ["storeName"])));
+                                          },
+                                          icon: Icon(
+                                            Icons.book_outlined,
+                                            size: 40,
+                                            color: ColorStyles.white,
+                                          ),
+                                          label: Text("Book now"),
+                                        ),
+                                      ))
+                                    : (Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: FloatingActionButton.extended(
+                                          onPressed: () {
+                                            Navigator.push(
+                                                context,
+                                                PageTransition(
+                                                    type: PageTransitionType
+                                                        .bottomToTop,
+                                                    child: MapScreen()));
+                                          },
+                                          icon: Icon(
+                                            Icons.book_outlined,
+                                            size: 40,
+                                            color: ColorStyles.white,
+                                          ),
+                                          label: Text("Book now"),
+                                        ),
+                                      ));
+                              }),
+                        ],
+                      ),
+                    );
+                  }
+                },
+              ),
             ),
           ),
         );

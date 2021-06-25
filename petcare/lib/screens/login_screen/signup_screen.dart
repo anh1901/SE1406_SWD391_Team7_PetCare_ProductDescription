@@ -221,6 +221,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
             uid: uID,
             email: email,
             username: firstName + " " + lastName,
+            status: "alive",
+            lastLocation: "",
           ));
         });
 

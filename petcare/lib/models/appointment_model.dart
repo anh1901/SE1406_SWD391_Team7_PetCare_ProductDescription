@@ -10,6 +10,7 @@ class AppointmentModel {
   final List<String> selectedServiceIndex;
   final double totalPrice;
   final String paymentMethod;
+  final String status;
   AppointmentModel({
     this.id,
     this.storeId,
@@ -22,6 +23,7 @@ class AppointmentModel {
     this.selectedServiceIndex,
     this.totalPrice,
     this.paymentMethod,
+    this.status,
   });
   factory AppointmentModel.fromJson(Map<String, dynamic> json) =>
       AppointmentModel(
@@ -36,6 +38,7 @@ class AppointmentModel {
         selectedType: json["selectedType"],
         totalPrice: json["totalPrice"],
         paymentMethod: json["paymentMethod"],
+        status: json["status"],
       );
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -49,5 +52,6 @@ class AppointmentModel {
         "selectedServiceIndex": selectedServiceIndex,
         "totalPrice": totalPrice,
         "paymentMethod": paymentMethod,
+        "status": status,
       };
 }

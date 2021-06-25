@@ -474,6 +474,7 @@ class _CreatePetScreenState extends State<CreatePetScreen> {
         petWeight: weight.toString(),
         type: _selectedType,
         description: description,
+        status: "alive",
       ),
     )
         .then((value) {

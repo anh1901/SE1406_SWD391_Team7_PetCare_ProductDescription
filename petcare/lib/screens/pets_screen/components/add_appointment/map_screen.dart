@@ -17,11 +17,13 @@ import 'book_service_screen.dart';
 final FirebaseAuth auth = FirebaseAuth.instance;
 final User user = auth.currentUser;
 final uid = (user == null) ? "YA0MCREEIsG4U8bUtyXQ" : user.uid;
-final storeRef =
-    FirebaseFirestore.instance.collection('stores').withConverter<StoreModel>(
-          fromFirestore: (snapshot, _) => StoreModel.fromJson(snapshot.data()),
-          toFirestore: (store, _) => store.toJson(),
-        );
+final storeRef = FirebaseFirestore.instance
+    .collection('stores')
+    .where("status", isEqualTo: "alive")
+    .withConverter<StoreModel>(
+      fromFirestore: (snapshot, _) => StoreModel.fromJson(snapshot.data()),
+      toFirestore: (store, _) => store.toJson(),
+    );
 Future getListStore() async {
   QuerySnapshot storeList = (await storeRef.get());
   return storeList.docs;

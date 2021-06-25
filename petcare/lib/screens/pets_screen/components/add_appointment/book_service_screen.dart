@@ -20,6 +20,7 @@ import 'package:timer_builder/timer_builder.dart';
 
 import '../../create_pet.dart';
 import 'checkout_screen.dart';
+import 'map_screen.dart';
 
 final currency = new NumberFormat("#,##0", "vi_VN");
 final Map<String, String> serviceTypes = {
@@ -39,19 +40,23 @@ final FirebaseAuth auth = FirebaseAuth.instance;
 final User user = auth.currentUser;
 final uid = (user == null) ? "YA0MCREEIsG4U8bUtyXQ" : user.uid;
 
-final storeRef =
-    FirebaseFirestore.instance.collection('stores').withConverter<StoreModel>(
-          fromFirestore: (snapshot, _) => StoreModel.fromJson(snapshot.data()),
-          toFirestore: (store, _) => store.toJson(),
-        );
+final storeRef = FirebaseFirestore.instance
+    .collection('stores')
+    .where("status", isEqualTo: "alive")
+    .withConverter<StoreModel>(
+      fromFirestore: (snapshot, _) => StoreModel.fromJson(snapshot.data()),
+      toFirestore: (store, _) => store.toJson(),
+    );
 final servicesRef = (String storeId) => FirebaseFirestore.instance
     .collection('stores/$storeId/services')
+    .where("status", isEqualTo: "alive")
     .withConverter<PetServices>(
       fromFirestore: (snapshot, _) => PetServices.fromJson(snapshot.data()),
       toFirestore: (service, _) => service.toJson(),
     );
 final petRef = FirebaseFirestore.instance
     .collection('users/$uid/pets')
+    .where("status", isEqualTo: "alive")
     .withConverter<PetModel>(
       fromFirestore: (snapshot, _) => PetModel.fromJson(snapshot.data()),
       toFirestore: (pet, _) => pet.toJson(),
@@ -179,23 +184,32 @@ class _BookServiceScreenState extends State<BookServiceScreen> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.blue[50],
-                            offset: Offset(4, 6),
-                            blurRadius: 10,
-                          ),
-                        ]),
-                    child: Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: CustomText(
-                        text: widget.currentAddress,
-                        size: 18,
-                        color: Colors.grey,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          PageTransition(
+                              type: PageTransitionType.bottomToTop,
+                              child: MapScreen()));
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.blue[50],
+                              offset: Offset(4, 6),
+                              blurRadius: 10,
+                            ),
+                          ]),
+                      child: Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: CustomText(
+                          text: widget.currentAddress,
+                          size: 18,
+                          color: Colors.grey,
+                        ),
                       ),
                     ),
                   ),
@@ -355,7 +369,7 @@ class _BookServiceScreenState extends State<BookServiceScreen> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: CustomText(
-                    text: "Select pets service",
+                    text: "Select pets service(*)",
                     size: 18,
                     fontWeight: FontWeight.bold,
                   ),
@@ -560,7 +574,10 @@ class _BookServiceScreenState extends State<BookServiceScreen> {
                       minWidth: SizeFit.screenWidth,
                       padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                       onPressed: () {
-                        bookService();
+                        _selectedServiceIndex.length == 0
+                            ? Toast.showToast(
+                                "Please select the missing field.")
+                            : bookService();
                       },
                       child: CustomText(
                           text: "Book Now",
@@ -879,26 +896,7 @@ class _BookServiceScreenState extends State<BookServiceScreen> {
                                             child: Padding(
                                               padding:
                                                   const EdgeInsets.all(20.0),
-                                              child:
-                                                  // SizedBox(
-                                                  //   child: Image(
-                                                  //     //load image from network with error handler
-                                                  //     image: NetworkImageWithRetry(
-                                                  //         snapshot.data[index]
-                                                  //             ["petImg"]),
-                                                  //     errorBuilder: (context,
-                                                  //             exception,
-                                                  //             stackTrack) =>
-                                                  //         Icon(
-                                                  //       Icons.error,
-                                                  //     ),
-                                                  //   ),
-                                                  //   height:
-                                                  //       SizeConfig.screenHeight / 8,
-                                                  //   width:
-                                                  //       SizeConfig.screenWidth / 4,
-                                                  // ),
-                                                  Row(
+                                              child: Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment
                                                         .spaceBetween,
