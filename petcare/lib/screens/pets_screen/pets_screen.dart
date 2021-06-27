@@ -14,10 +14,10 @@ import 'package:petcare/models/pet_services_model.dart';
 import 'package:petcare/models/store_model.dart';
 import 'package:petcare/redux/redux_state.dart';
 import 'package:petcare/screens/pets_screen/components/pet_services.dart';
+import 'package:petcare/screens/pets_screen/components/store_detail/store_detail_page.dart';
 import 'package:petcare/widgets/app_size.dart';
 import 'package:petcare/widgets/commons.dart';
 import 'package:petcare/widgets/custom_text.dart';
-import 'package:petcare/widgets/size_config.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'components/add_appointment/book_service_screen.dart';
@@ -172,7 +172,8 @@ class _PetsScreenState extends State<PetsScreen> {
                             future: getUserDetail(uid),
                             builder: (context, snapshot) {
                               return Text(
-                                " " + snapshot.data[0]["username"],
+                                // " " + snapshot.data[0]["username"],
+                                " User",
                                 style: TextStyle(
                                     fontSize: 20,
                                     color: Colors.blue[200],
@@ -228,7 +229,7 @@ class _PetsScreenState extends State<PetsScreen> {
                   ],
                 ),
                 Container(
-                  height: SizeFit.screenWidth / 1.6,
+                  height: SizeFit.screenHeight / 2.2,
                   child: Padding(
                     padding: const EdgeInsets.only(top: 5),
                     child: FutureBuilder(
@@ -241,124 +242,119 @@ class _PetsScreenState extends State<PetsScreen> {
                             );
                           } else {
                             return ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                physics: BouncingScrollPhysics(),
-                                itemCount: snapshot.data.length,
-                                shrinkWrap: true,
-                                itemBuilder: (_, index) {
-                                  if (snapshot.data.length == 0) {
-                                    return Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: CustomText(
-                                          text: AppLocalizations.of(context)
-                                              .noStoreAvailable),
-                                    );
-                                  } else {
-                                    return Padding(
-                                      padding: const EdgeInsets.all(5.0),
-                                      child: Column(
+                              scrollDirection: Axis.horizontal,
+                              physics: BouncingScrollPhysics(),
+                              itemCount: snapshot.data.length,
+                              shrinkWrap: true,
+                              itemBuilder: (_, index) {
+                                if (snapshot.data.length == 0) {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: CustomText(
+                                        text: AppLocalizations.of(context)
+                                            .noStoreAvailable),
+                                  );
+                                } else {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          PageTransition(
+                                              type: PageTransitionType
+                                                  .bottomToTop,
+                                              child: StoreDetailPage(
+                                                  snapshot.data[index]["id"])));
+                                      // showModal(
+                                      //     context, snapshot.data[index]["id"]);
+                                    },
+                                    child: Container(
+                                      width: SizeFit.screenWidth * 0.8,
+                                      child: Stack(
                                         children: <Widget>[
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              border: Border.all(
-                                                  color:
-                                                      Colors.lightBlueAccent),
-                                              borderRadius:
-                                                  BorderRadius.circular(20),
-                                            ),
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                showModal(context,
-                                                    snapshot.data[index]["id"]);
-                                              }, //view pet detail
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(5.0),
-                                                child: Container(
+                                          Hero(
+                                            tag: Key("key" +
+                                                snapshot.data[index]
+                                                    ["imageUrl"]),
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(20.0),
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(8.0),
+                                                child: Image(
                                                   width:
                                                       SizeFit.screenWidth * 0.8,
-                                                  decoration: BoxDecoration(
-                                                      color: Colors.white,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              20),
-                                                      boxShadow: [
-                                                        BoxShadow(
-                                                          color:
-                                                              Colors.blue[50],
-                                                          offset: Offset(4, 6),
-                                                          blurRadius: 20,
-                                                        ),
-                                                      ]),
-                                                  padding:
-                                                      EdgeInsets.only(top: 8),
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            10.0),
-                                                    child: Column(
-                                                      children: [
-                                                        SizedBox(
-                                                          child: Image(
-                                                            //load image from network with error handler
-                                                            image: NetworkImageWithRetry(
-                                                                snapshot.data[
-                                                                        index][
-                                                                    "imageUrl"]),
-                                                            errorBuilder: (context,
-                                                                    exception,
-                                                                    stackTrack) =>
-                                                                Icon(
-                                                              Icons.error,
+                                                  height: SizeFit.screenHeight /
+                                                      3.5,
+                                                  fit: BoxFit.cover,
+                                                  //load image from network with error handler
+                                                  image: NetworkImageWithRetry(
+                                                      snapshot.data[index]
+                                                          ["imageUrl"]),
+                                                  errorBuilder: (context,
+                                                          exception,
+                                                          stackTrack) =>
+                                                      Icon(
+                                                    Icons.error,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.all(30.0),
+                                            child: Card(
+                                              elevation: 8,
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10)),
+                                              margin: const EdgeInsets.only(
+                                                  top: 200),
+                                              child: Column(
+                                                children: <Widget>[
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: <Widget>[
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
+                                                        child: Container(
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .all(Radius
+                                                                        .circular(
+                                                                            8)),
+                                                            color: Colors.green,
+                                                          ),
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .symmetric(
+                                                                    vertical:
+                                                                        4.0,
+                                                                    horizontal:
+                                                                        8),
+                                                            child: Text(
+                                                              'ON DISCOUNT',
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize: 12),
                                                             ),
                                                           ),
-                                                          height: SizeConfig
-                                                                  .screenHeight /
-                                                              8,
                                                         ),
-                                                        Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          children: [
-                                                            CustomText(
-                                                              text: snapshot
-                                                                          .data[
-                                                                      index]
-                                                                  ["storeName"],
-                                                              size: 20,
-                                                              color: ColorStyles
-                                                                  .color_333333,
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Container(
-                                                              constraints:
-                                                                  new BoxConstraints(
-                                                                      maxWidth:
-                                                                          SizeFit.screenWidth *
-                                                                              0.7),
-                                                              child: CustomText(
-                                                                  size: 14,
-                                                                  text:
-                                                                      "${snapshot.data[index]["location"]}"),
-                                                            ),
-                                                            CustomText(
-                                                              text:
-                                                                  " ${snapshot.data[index]["distance"].toString()}" +
-                                                                      " km",
-                                                              size: 16,
-                                                              color:
-                                                                  Colors.grey,
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        Row(
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
+                                                        child: Row(
                                                           mainAxisAlignment:
                                                               MainAxisAlignment
                                                                   .start,
@@ -379,18 +375,52 @@ class _PetsScreenState extends State<PetsScreen> {
                                                             ),
                                                           ],
                                                         ),
-                                                      ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  ListTile(
+                                                    title: CustomText(
+                                                      text: snapshot.data[index]
+                                                          ["storeName"],
+                                                      size: 20,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: ColorStyles
+                                                          .color_333333,
+                                                    ),
+                                                    subtitle: CustomText(
+                                                        size: 14,
+                                                        color: Colors.grey,
+                                                        text:
+                                                            "${snapshot.data[index]["location"]}"),
+                                                    trailing: Container(
+                                                      decoration: BoxDecoration(
+                                                          color: Colors
+                                                              .lightGreenAccent,
+                                                          shape:
+                                                              BoxShape.circle),
+                                                      child: Transform.rotate(
+                                                        angle: 0,
+                                                        child: IconButton(
+                                                          icon: Icon(Icons
+                                                              .map_outlined),
+                                                          onPressed: () {},
+                                                          color: Colors.blue,
+                                                        ),
+                                                      ),
                                                     ),
                                                   ),
-                                                ),
+                                                ],
                                               ),
                                             ),
                                           ),
                                         ],
                                       ),
-                                    );
-                                  }
-                                });
+                                    ),
+                                  );
+                                }
+                              },
+                            );
                           }
                         }),
                   ),

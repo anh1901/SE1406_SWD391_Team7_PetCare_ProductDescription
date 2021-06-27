@@ -1,0 +1,22 @@
+{
+  "reviews": [
+  {
+    "message": "Very confortable rooms!!",
+    "user": "Nan",
+    "userImage": "https://www.dittolanding.org/templates/semantic/img/nan.jpg",
+    "rate": 4
+  },
+  {
+    "message": "Good attention, good food, good rooms. Amazing places",
+    "user": "Elliot",
+    "userImage": "https://react.semantic-ui.com/images/avatar/large/elliot.jpg",
+    "rate": 3
+  },
+  {
+    "message": "Best place to stay :)",
+    "user": "Matt",
+    "userImage": "https://image.ibb.co/gmbNQT/matthew.png",
+    "rate": 5
+  }
+]
+}
