@@ -24,6 +24,7 @@ import 'components/add_appointment/book_service_screen.dart';
 import 'components/add_appointment/map_screen.dart';
 import 'components/pet_appointment.dart';
 import 'components/pet_list.dart';
+import 'components/store_detail/store_view_all.dart';
 import 'create_pet.dart';
 
 final currency = new NumberFormat("#,##0", "vi_VN");
@@ -187,6 +188,20 @@ class _PetsScreenState extends State<PetsScreen> {
                   ],
                 ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10, left: 12),
+                      child: CustomText(
+                        text: "Advertisement",
+                        size: 22,
+                        color: ColorStyles.color_1a1a1a,
+                      ),
+                    ),
+                  ],
+                ),
+                PetServicesList(),
+                Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Padding(
@@ -202,7 +217,6 @@ class _PetsScreenState extends State<PetsScreen> {
                     ),
                   ],
                 ),
-                PetServicesList(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -217,7 +231,13 @@ class _PetsScreenState extends State<PetsScreen> {
                     Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              PageTransition(
+                                  type: PageTransitionType.bottomToTop,
+                                  child: ViewAllStore()));
+                        },
                         child: CustomText(
                           text: "View more",
                           color: ColorStyles.main_color,
@@ -229,7 +249,7 @@ class _PetsScreenState extends State<PetsScreen> {
                   ],
                 ),
                 Container(
-                  height: SizeFit.screenHeight / 2.2,
+                  height: SizeFit.screenHeight / 2,
                   child: Padding(
                     padding: const EdgeInsets.only(top: 5),
                     child: FutureBuilder(
@@ -444,7 +464,9 @@ class _PetsScreenState extends State<PetsScreen> {
                             Padding(
                               padding: const EdgeInsets.all(5.0),
                               child: GestureDetector(
-                                onTap: () {},
+                                onTap: () {
+                                  //
+                                },
                                 child: CustomText(
                                   text: "View all",
                                   color: ColorStyles.main_color,

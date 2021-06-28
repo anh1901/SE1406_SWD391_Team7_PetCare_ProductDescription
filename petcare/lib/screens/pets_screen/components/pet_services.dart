@@ -6,7 +6,7 @@ import 'package:petcare/widgets/app_size.dart';
 
 List<PetServices> petServicesList = [
   PetServices(
-      name: "Health",
+      name: "Health Care",
       image:
           "https://image.freepik.com/free-vector/tiny-doctors-caring-dog-vet-office_74855-6677.jpg"),
   PetServices(
@@ -54,86 +54,46 @@ class PetServicesList extends StatelessWidget {
   }
 
   final List<Widget> imageSliders = petServicesList
-      .map((item) => Container(
-            child: Container(
-              margin: EdgeInsets.all(5.0),
-              child: ClipRRect(
-                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                  child: Stack(
-                    children: <Widget>[
-                      Image.network(item.image,
-                          fit: BoxFit.cover, width: 1000.0),
-                      Positioned(
-                        bottom: 0.0,
-                        left: 0.0,
-                        right: 0.0,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                Color.fromARGB(200, 0, 0, 0),
-                                Color.fromARGB(0, 0, 0, 0)
-                              ],
-                              begin: Alignment.bottomCenter,
-                              end: Alignment.topCenter,
-                            ),
+      .map(
+        (item) => Container(
+          child: Container(
+            margin: EdgeInsets.all(5.0),
+            child: ClipRRect(
+                borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                child: Stack(
+                  children: <Widget>[
+                    Image.network(item.image, fit: BoxFit.cover, width: 1000.0),
+                    Positioned(
+                      bottom: 0.0,
+                      left: 0.0,
+                      right: 0.0,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              Color.fromARGB(200, 0, 0, 0),
+                              Color.fromARGB(0, 0, 0, 0)
+                            ],
+                            begin: Alignment.bottomCenter,
+                            end: Alignment.topCenter,
                           ),
-                          padding: EdgeInsets.symmetric(
-                              vertical: 10.0, horizontal: 20.0),
-                          child: Text(
-                            '${item.name}',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.bold,
-                            ),
+                        ),
+                        padding: EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 20.0),
+                        child: Text(
+                          '${item.name}',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
-                    ],
-                  )),
-            ),
-          ))
+                    ),
+                  ],
+                )),
+          ),
+        ),
+      )
       .toList();
 }
-
-// Container(
-// height: SizeFit.screenHeight / 5.3,
-// child: ListView.builder(
-// scrollDirection: Axis.horizontal,
-// itemCount: petServicesList.length,
-// itemBuilder: (_, index) {
-// return GestureDetector(
-// onTap: () {
-// //
-// },
-// child: Padding(
-// padding: const EdgeInsets.all(5.0),
-// child: Column(
-// children: <Widget>[
-// Padding(
-// padding: const EdgeInsets.all(5.0),
-// child: Container(
-// decoration: BoxDecoration(
-// borderRadius: BorderRadius.all(Radius.circular(20.0)),
-// color: Colors.transparent,
-// ),
-// child: ClipRRect(
-// borderRadius: BorderRadius.circular(8.0),
-// child: Image.asset(
-// 'assets/images/${petServicesList[index].image}'),
-// ),
-// ),
-// ),
-// SizedBox(
-// height: 5,
-// ),
-// CustomText(
-// text: petServicesList[index].name,
-// size: 14,
-// color: ColorStyles.black,
-// )
-// ],
-// ),
-// ),
-// )
