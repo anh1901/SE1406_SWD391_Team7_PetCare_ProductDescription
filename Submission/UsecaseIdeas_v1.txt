@@ -1,0 +1,19 @@
+1.Tạo thú cưng mới-Layered (n-tier) architecture
+	Maintainable
+	Testable
+	Easy to assign separate "roles"
+	Easy to update and enhance layers separately
+2.Đặt hẹn dịch vụ thú cưng-Layered (n-tier) architecture
+	
+
+3.Mua sản phẩm thú cưng -Client-Server
+
+E-commerce is based on the client-server architecture. 
+A client can be an application, which uses a Graphical User Interface (GUI)
+that sends request to a server for certain services. 
+The server is the provider of the services requested by the client.
+
+4.Xem thông tin thú cưng realtime -distributed realtime architectures(Gaspar et al.1999), blackboard??
+
+5.Nhắn tin với người dùng khác-Client-Server
+	

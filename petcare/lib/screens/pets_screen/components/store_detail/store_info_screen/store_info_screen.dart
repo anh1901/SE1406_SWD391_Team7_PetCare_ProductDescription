@@ -1,10 +1,31 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:petcare/models/pet_services_model.dart';
 import 'package:petcare/models/store_model.dart';
+import 'package:petcare/models/user.dart';
+import 'package:petcare/screens/pets_screen/components/add_appointment/book_service_screen.dart';
+import 'package:petcare/screens/pets_screen/components/add_appointment/map_screen.dart';
 import 'package:petcare/widgets/commons.dart';
 import 'package:petcare/widgets/custom_text.dart';
+
+final FirebaseAuth auth = FirebaseAuth.instance;
+final User user = auth.currentUser;
+final uid = (user == null) ? "YA0MCREEIsG4U8bUtyXQ" : user.uid;
+Future getUserDetail(String id) async {
+  QuerySnapshot userDetail = (await userRef(id).get());
+  return userDetail.docs;
+}
+
+final userRef = (String id) => FirebaseFirestore.instance
+    .collection('users')
+    .where("uid", isEqualTo: id)
+    .withConverter<UserModel>(
+      fromFirestore: (snapshot, _) => UserModel.fromJson(snapshot.data()),
+      toFirestore: (user, _) => user.toJson(),
+    );
 
 final currency = new NumberFormat("#,##0", "vi_VN");
 final storeDetailRef = (String id) => FirebaseFirestore.instance
@@ -108,7 +129,7 @@ class _StoreInfoScreenState extends State<StoreInfoScreen> {
               SizedBox(height: 14),
               AnimatedContainer(
                 width: 200.0,
-                height: selected ? 400.0 : 100.0,
+                height: selected ? 250.0 : 100.0,
                 alignment: selected
                     ? Alignment.center
                     : AlignmentDirectional.topCenter,
@@ -245,6 +266,53 @@ class _StoreInfoScreenState extends State<StoreInfoScreen> {
                         style: TextStyle(color: Colors.lightBlueAccent),
                       ),
               ),
+              FutureBuilder(
+                  future: getUserDetail(uid),
+                  builder: (context, snapshotUser) {
+                    return (snapshotUser.data[0]["lastLocation"] != "")
+                        ? (Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: FloatingActionButton.extended(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    PageTransition(
+                                        type: PageTransitionType.bottomToTop,
+                                        child: BookServiceScreen(
+                                            currentAddress: snapshotUser.data[0]
+                                                ["lastLocation"],
+                                            currentStore: snapshot.data[0]
+                                                ["id"],
+                                            storeName: snapshot.data[0]
+                                                ["storeName"])));
+                              },
+                              icon: Icon(
+                                Icons.book_outlined,
+                                size: 40,
+                                color: ColorStyles.white,
+                              ),
+                              label: Text("Book now"),
+                            ),
+                          ))
+                        : (Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: FloatingActionButton.extended(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    PageTransition(
+                                        type: PageTransitionType.bottomToTop,
+                                        child: MapScreen()));
+                              },
+                              icon: Icon(
+                                Icons.book_outlined,
+                                size: 40,
+                                color: ColorStyles.white,
+                              ),
+                              label: Text("Book now"),
+                            ),
+                          ));
+                  }),
             ],
           );
         }

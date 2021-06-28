@@ -341,7 +341,7 @@ class _PetsScreenState extends State<PetsScreen> {
                                                                     horizontal:
                                                                         8),
                                                             child: Text(
-                                                              'ON DISCOUNT',
+                                                              'POPULAR',
                                                               style: TextStyle(
                                                                   color: Colors
                                                                       .white,
