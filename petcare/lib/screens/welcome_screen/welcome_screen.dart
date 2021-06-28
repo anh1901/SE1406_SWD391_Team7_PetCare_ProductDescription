@@ -31,7 +31,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         return Material(
           child: PageView(
             controller: _pageController,
-            children: [1, 2, 3, 4].map(
+            children: [1, 2, 3].map(
               (index) {
                 return GestureDetector(
                   child: Image.asset(
@@ -39,7 +39,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     fit: BoxFit.cover,
                   ),
                   onTap: () {
-                    if (index == 4) {
+                    if (index == 3) {
                       SharedStorage.saveShowWelcome();
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(

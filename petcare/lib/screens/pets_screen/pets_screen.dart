@@ -350,7 +350,8 @@ class _PetsScreenState extends State<PetsScreen> {
                                                                     .all(Radius
                                                                         .circular(
                                                                             8)),
-                                                            color: Colors.green,
+                                                            color: Colors
+                                                                .lightBlueAccent,
                                                           ),
                                                           child: Padding(
                                                             padding:
@@ -416,7 +417,7 @@ class _PetsScreenState extends State<PetsScreen> {
                                                     trailing: Container(
                                                       decoration: BoxDecoration(
                                                           color: Colors
-                                                              .lightGreenAccent,
+                                                              .lightBlueAccent,
                                                           shape:
                                                               BoxShape.circle),
                                                       child: Transform.rotate(
@@ -425,7 +426,7 @@ class _PetsScreenState extends State<PetsScreen> {
                                                           icon: Icon(Icons
                                                               .map_outlined),
                                                           onPressed: () {},
-                                                          color: Colors.blue,
+                                                          color: Colors.black,
                                                         ),
                                                       ),
                                                     ),
