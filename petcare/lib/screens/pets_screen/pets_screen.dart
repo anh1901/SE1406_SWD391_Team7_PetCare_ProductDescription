@@ -231,7 +231,7 @@ class _PetsScreenState extends State<PetsScreen> {
                   ],
                 ),
                 Container(
-                  height: SizeFit.screenHeight / 2.5,
+                  height: SizeFit.screenHeight / 2.2,
                   child: Padding(
                     padding: const EdgeInsets.only(top: 5),
                     child: FutureBuilder(
@@ -314,7 +314,7 @@ class _PetsScreenState extends State<PetsScreen> {
                                                                   0.8,
                                                               height: SizeFit
                                                                       .screenHeight /
-                                                                  5,
+                                                                  3,
                                                               fit: BoxFit.cover,
                                                               //load image from network with error handler
                                                               image: NetworkImageWithRetry(
@@ -345,7 +345,7 @@ class _PetsScreenState extends State<PetsScreen> {
                                                           margin:
                                                               const EdgeInsets
                                                                       .only(
-                                                                  top: 100),
+                                                                  top: 120),
                                                           child: Column(
                                                             children: <Widget>[
                                                               Row(
