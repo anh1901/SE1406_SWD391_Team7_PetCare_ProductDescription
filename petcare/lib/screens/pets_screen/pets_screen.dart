@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_image/network.dart';
@@ -20,7 +21,6 @@ import 'package:petcare/widgets/commons.dart';
 import 'package:petcare/widgets/custom_text.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-import 'components/add_appointment/book_service_screen.dart';
 import 'components/add_appointment/map_screen.dart';
 import 'components/pet_appointment.dart';
 import 'components/pet_list.dart';
@@ -216,6 +216,327 @@ class _PetsScreenState extends State<PetsScreen> {
                       ),
                     ),
                   ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10, left: 12),
+                      child: CustomText(
+                        text: "On discount services",
+                        size: 22,
+                        color: ColorStyles.color_1a1a1a,
+                      ),
+                    ),
+                  ],
+                ),
+                Container(
+                  height: SizeFit.screenHeight / 2.5,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 5),
+                    child: FutureBuilder(
+                        future: getListStore(),
+                        builder: (context, snapshot0) {
+                          if (snapshot0.connectionState ==
+                              ConnectionState.waiting) {
+                            return Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          } else {
+                            return ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                physics: BouncingScrollPhysics(),
+                                itemCount: snapshot0.data.length,
+                                shrinkWrap: true,
+                                itemBuilder: (_, i) {
+                                  return FutureBuilder(
+                                    future:
+                                        getServiceList(snapshot0.data[i]["id"]),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return Center(
+                                          child: CircularProgressIndicator(),
+                                        );
+                                      } else {
+                                        return ListView.builder(
+                                          scrollDirection: Axis.horizontal,
+                                          physics: BouncingScrollPhysics(),
+                                          itemCount: snapshot.data.length,
+                                          shrinkWrap: true,
+                                          itemBuilder: (_, index) {
+                                            if (snapshot.data.length == 0) {
+                                              return Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: CustomText(
+                                                    text: AppLocalizations.of(
+                                                            context)
+                                                        .noStoreAvailable),
+                                              );
+                                            } else {
+                                              return GestureDetector(
+                                                onTap: () {
+                                                  Navigator.push(
+                                                      context,
+                                                      PageTransition(
+                                                          type:
+                                                              PageTransitionType
+                                                                  .bottomToTop,
+                                                          child: StoreDetailPage(
+                                                              snapshot0.data[
+                                                                      index]
+                                                                  ["id"])));
+                                                  // showModal(
+                                                  //     context, snapshot.data[index]["id"]);
+                                                },
+                                                child: Container(
+                                                  width:
+                                                      SizeFit.screenWidth * 0.8,
+                                                  child: Stack(
+                                                    children: <Widget>[
+                                                      Hero(
+                                                        tag: Key("key" +
+                                                            snapshot0.data[i]
+                                                                ["imageUrl"]),
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(20.0),
+                                                          child: ClipRRect(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        8.0),
+                                                            child: Image(
+                                                              width: SizeFit
+                                                                      .screenWidth *
+                                                                  0.8,
+                                                              height: SizeFit
+                                                                      .screenHeight /
+                                                                  5,
+                                                              fit: BoxFit.cover,
+                                                              //load image from network with error handler
+                                                              image: NetworkImageWithRetry(
+                                                                  snapshot0.data[
+                                                                          i][
+                                                                      "imageUrl"]),
+                                                              errorBuilder: (context,
+                                                                      exception,
+                                                                      stackTrack) =>
+                                                                  Icon(
+                                                                Icons.error,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(30.0),
+                                                        child: Card(
+                                                          elevation: 8,
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10)),
+                                                          margin:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  top: 100),
+                                                          child: Column(
+                                                            children: <Widget>[
+                                                              Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
+                                                                children: <
+                                                                    Widget>[
+                                                                  Padding(
+                                                                    padding:
+                                                                        const EdgeInsets.all(
+                                                                            8.0),
+                                                                    child:
+                                                                        Container(
+                                                                      decoration:
+                                                                          BoxDecoration(
+                                                                        borderRadius:
+                                                                            BorderRadius.all(Radius.circular(8)),
+                                                                        color: Colors
+                                                                            .green,
+                                                                      ),
+                                                                      child:
+                                                                          Padding(
+                                                                        padding: const EdgeInsets.symmetric(
+                                                                            vertical:
+                                                                                4.0,
+                                                                            horizontal:
+                                                                                8),
+                                                                        child:
+                                                                            Text(
+                                                                          'DISCOUNT',
+                                                                          style: TextStyle(
+                                                                              color: Colors.white,
+                                                                              fontSize: 12),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  Padding(
+                                                                    padding:
+                                                                        const EdgeInsets.all(
+                                                                            8.0),
+                                                                    child: Row(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .start,
+                                                                      children: [
+                                                                        CustomText(
+                                                                          text: snapshot0
+                                                                              .data[i]["rate"]
+                                                                              .toString(),
+                                                                          size:
+                                                                              16,
+                                                                          color:
+                                                                              Colors.black,
+                                                                        ),
+                                                                        Icon(
+                                                                          Icons
+                                                                              .star,
+                                                                          color:
+                                                                              Colors.yellow,
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            15),
+                                                                child: Row(
+                                                                  children: [
+                                                                    Text(
+                                                                        "${currency.format((snapshot.data[index]["price"] * 1.2))} đ - ",
+                                                                        style: TextStyle(
+                                                                            fontSize:
+                                                                                14,
+                                                                            fontWeight:
+                                                                                FontWeight.w100,
+                                                                            color: ColorStyles.color_333333,
+                                                                            decoration: TextDecoration.lineThrough)),
+                                                                    CustomText(
+                                                                      text:
+                                                                          "${currency.format((snapshot.data[index]["price"]))} đ",
+                                                                      size: 14,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      color: ColorStyles
+                                                                          .color_333333,
+                                                                    ),
+                                                                    Padding(
+                                                                      padding:
+                                                                          const EdgeInsets.all(
+                                                                              8.0),
+                                                                      child:
+                                                                          Container(
+                                                                        decoration:
+                                                                            BoxDecoration(
+                                                                          borderRadius:
+                                                                              BorderRadius.all(Radius.circular(8)),
+                                                                          color:
+                                                                              Colors.red,
+                                                                        ),
+                                                                        child:
+                                                                            Padding(
+                                                                          padding: const EdgeInsets.symmetric(
+                                                                              vertical: 4.0,
+                                                                              horizontal: 8),
+                                                                          child:
+                                                                              Text(
+                                                                            '20% OFF',
+                                                                            style:
+                                                                                TextStyle(color: Colors.white, fontSize: 12),
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                              ListTile(
+                                                                title: Row(
+                                                                  children: [
+                                                                    CustomText(
+                                                                      text: snapshot
+                                                                              .data[index]
+                                                                          [
+                                                                          "name"],
+                                                                      size: 18,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      color: ColorStyles
+                                                                          .color_333333,
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                                subtitle:
+                                                                    Column(
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
+                                                                  children: [
+                                                                    CustomText(
+                                                                      text: "at " +
+                                                                          snapshot0.data[i]
+                                                                              [
+                                                                              "storeName"],
+                                                                      size: 14,
+                                                                      color: ColorStyles
+                                                                          .color_333333,
+                                                                    ),
+                                                                    CustomText(
+                                                                        size:
+                                                                            14,
+                                                                        color: Colors
+                                                                            .grey,
+                                                                        text:
+                                                                            "${snapshot0.data[i]["location"]}"),
+                                                                    CustomText(
+                                                                        size:
+                                                                            14,
+                                                                        color: Colors
+                                                                            .grey,
+                                                                        text:
+                                                                            "${snapshot0.data[i]["distance"]} km"),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              );
+                                            }
+                                          },
+                                        );
+                                      }
+                                    },
+                                  );
+                                });
+                          }
+                        }),
+                  ),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -567,301 +888,5 @@ class _PetsScreenState extends State<PetsScreen> {
   void scrollToTop() {
     scrollController.animateTo(0,
         duration: Duration(seconds: 1), curve: Curves.linear);
-  }
-
-  void showModal(context, id) {
-    showModalBottomSheet<dynamic>(
-      context: context,
-      isScrollControlled: true,
-      enableDrag: true,
-      builder: (builder) {
-        return SingleChildScrollView(
-          physics: ScrollPhysics(),
-          child: Container(
-            color: Colors.grey[800],
-            height: SizeFit.screenHeight * 0.8,
-            child: Container(
-              decoration: new BoxDecoration(
-                color: Colors.white,
-                borderRadius: new BorderRadius.only(
-                    topLeft: const Radius.circular(20.0),
-                    topRight: const Radius.circular(20.0)),
-              ),
-              child: FutureBuilder(
-                future: getStoreDetail(id),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  } else if (snapshot.hasError) {
-                    return Text(snapshot.error.toString());
-                  } else {
-                    return Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: ListView(
-                        children: [
-                          Center(
-                            child: CustomText(
-                                text: "Store Detail",
-                                size: 20,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Divider(),
-                          Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: CircleAvatar(
-                              radius: 100,
-                              backgroundColor: Colors.white,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(20),
-                                child: Image(
-                                  //load image from network with error handler
-                                  image: NetworkImageWithRetry(
-                                      snapshot.data[0]["imageUrl"]),
-                                  errorBuilder:
-                                      (context, exception, stackTrack) => Icon(
-                                    Icons.error,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: CustomText(
-                                  text: "Store Name:",
-                                  size: 16,
-                                  color: ColorStyles.black,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: CustomText(
-                                  text: snapshot.data[0]["storeName"],
-                                  size: 16,
-                                  color: ColorStyles.black,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: CustomText(
-                                  text: "Location:",
-                                  size: 16,
-                                  color: ColorStyles.black,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: CustomText(
-                                  text: snapshot.data[0]["location"],
-                                  size: 16,
-                                  color: ColorStyles.black,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: CustomText(
-                                  text: "Rate:",
-                                  size: 16,
-                                  color: ColorStyles.black,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: Row(
-                                  children: [
-                                    CustomText(
-                                      text: snapshot.data[0]["rate"].toString(),
-                                      size: 16,
-                                      color: ColorStyles.black,
-                                    ),
-                                    Icon(Icons.star, color: Colors.yellow),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: CustomText(
-                                  text: "Distance:",
-                                  size: 16,
-                                  color: ColorStyles.black,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: CustomText(
-                                  text:
-                                      snapshot.data[0]["distance"].toString() +
-                                          " km",
-                                  size: 16,
-                                  color: ColorStyles.black,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: CustomText(
-                                  text: "Description:",
-                                  size: 16,
-                                  color: ColorStyles.black,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: CustomText(
-                                  text:
-                                      snapshot.data[0]["description"].length ==
-                                              0
-                                          ? "None"
-                                          : snapshot.data[0]["description"],
-                                  size: 16,
-                                  color: ColorStyles.black,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: CustomText(
-                                  text: "Available services:",
-                                  size: 16,
-                                  color: ColorStyles.black,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                          FutureBuilder(
-                            future: getServiceList(snapshot.data[0]["id"]),
-                            builder: (context, snapshot2) {
-                              if (snapshot2.connectionState ==
-                                  ConnectionState.waiting) {
-                                return Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              } else if (snapshot2.hasError) {
-                                return Text(snapshot2.error.toString());
-                              } else {
-                                return ListView.builder(
-                                  physics: NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemCount: snapshot2.data.length,
-                                  itemBuilder: (_, index) {
-                                    return Row(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.all(5.0),
-                                          child: CustomText(
-                                            text: "   " +
-                                                snapshot2.data[index]["name"],
-                                            size: 16,
-                                            color: ColorStyles.black,
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(5.0),
-                                          child: CustomText(
-                                            text:
-                                                " - ${currency.format((snapshot2.data[index]["price"]))} đ",
-                                            size: 16,
-                                            color: ColorStyles.black,
-                                          ),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
-                              }
-                            },
-                          ),
-                          FutureBuilder(
-                              future: getUserDetail(uid),
-                              builder: (context, snapshotUser) {
-                                return (snapshotUser.data[0]["lastLocation"] !=
-                                        "")
-                                    ? (Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: FloatingActionButton.extended(
-                                          onPressed: () {
-                                            Navigator.push(
-                                                context,
-                                                PageTransition(
-                                                    type: PageTransitionType
-                                                        .bottomToTop,
-                                                    child: BookServiceScreen(
-                                                        currentAddress:
-                                                            snapshotUser.data[0]
-                                                                [
-                                                                "lastLocation"],
-                                                        currentStore: snapshot
-                                                            .data[0]["id"],
-                                                        storeName: snapshot
-                                                                .data[0]
-                                                            ["storeName"])));
-                                          },
-                                          icon: Icon(
-                                            Icons.book_outlined,
-                                            size: 40,
-                                            color: ColorStyles.white,
-                                          ),
-                                          label: Text("Book now"),
-                                        ),
-                                      ))
-                                    : (Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: FloatingActionButton.extended(
-                                          onPressed: () {
-                                            Navigator.push(
-                                                context,
-                                                PageTransition(
-                                                    type: PageTransitionType
-                                                        .bottomToTop,
-                                                    child: MapScreen()));
-                                          },
-                                          icon: Icon(
-                                            Icons.book_outlined,
-                                            size: 40,
-                                            color: ColorStyles.white,
-                                          ),
-                                          label: Text("Book now"),
-                                        ),
-                                      ));
-                              }),
-                        ],
-                      ),
-                    );
-                  }
-                },
-              ),
-            ),
-          ),
-        );
-      },
-    );
   }
 }

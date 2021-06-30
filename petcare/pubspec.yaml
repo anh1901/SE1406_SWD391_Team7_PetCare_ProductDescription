@@ -73,6 +73,8 @@ dependencies:
   carousel_slider: ^3.0.0
   highlighter_coachmark: ^0.0.3
   fab_circular_menu: ^1.0.0
+  firebase_analytics: ^8.1.2
+  firebase_messaging: ^10.0.2
 
 
 
