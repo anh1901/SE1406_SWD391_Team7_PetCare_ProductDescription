@@ -1,0 +1,124 @@
+.container-settings {
+  display: block;
+  justify-content: center;
+  width: 100%;
+  padding: 0 15px;
+  padding-bottom: 25px;
+  margin-top: 30px;
+}
+
+.container-settings .forms-settings {
+  max-width: 920px;
+  width: 100%;
+  margin: 10px auto;
+}
+
+.container-settings .forms-settings {
+  margin: 20px auto 20px;
+  padding: 0 40px;
+}
+
+.container-settings .forms-settings .form-image-settings {
+  margin-bottom: 35px;
+}
+
+.container-settings .forms-settings .form-image-settings label {
+  display: flex;
+  width: 160px;
+  margin: 15px auto 0;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: filter 0.2s;
+}
+
+.container-settings .forms-settings .form-image-settings label:hover {
+  filter: contrast(85%);
+}
+
+.container-settings .forms-settings .form-image-settings label img {
+  max-width: 160px;
+  width: 100%;
+  height: 160px;
+  border: 1px solid #ebeced;
+  border-radius: 50%;
+}
+
+.container-settings .forms-settings  .form-content-settings .info-header-settings {
+  margin-bottom: 15px;
+}
+
+.container-settings .forms-settings  .form-content-settings .input-area, .container-settings .forms-settings  .form-content-settings .text-area-area {
+  padding: 0 30px;
+}
+
+.container-settings .forms-settings .form-content-settings .button-area-form {
+  margin-top: 30px;
+}
+
+.container-settings .form-content-settings .bottom-border-settings {
+  margin-top: 25px;
+  border-bottom: 1px solid #ebeced;
+}
+
+.container-settings .form-content-settings .city-states .city-input, .container-settings .form-content-settings .city-states .city-input input {
+  margin-right: 20px;
+}
+
+.container-settings .form-content-settings .city-states .city-input {
+  display: flex;
+  justify-content: left;
+  width: 100%;
+  height: 45px;
+  border-radius: 5px;
+  margin-bottom: 12px;
+  border: 1px solid #d1d5da;
+}
+
+.container-settings .form-content-settings .city-states .city-input input {
+  background: transparent;
+  border: none;
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  width: 100%;
+  margin: 0 15px;
+  color: #394458;
+}
+
+.container-settings .form-content-settings .city-states .states {
+  display: flex;
+  justify-content: left;
+  width: 20%;
+  height: 45px;
+  border-radius: 5px;
+  margin-bottom: 12px;
+  border: 1px solid #d1d5da;
+}
+
+.container-settings .form-content-settings .city-states .states input {
+  background: transparent;
+  border: none;
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  width: 100%;
+  padding: 0 10px;
+  color: #394458;
+}
+
+.container-settings .form-content-settings .city-states {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 30px;
+}
+
+@media only screen and (max-width: 768px) and (min-width: 0px) {
+  .container-settings .forms-settings {
+    padding: 0 15px;
+  }
+}
+
+@media only screen and (max-width: 375px) and (min-width: 0px) {
+  .container-settings .form-content-settings .city-states .states {
+    width: 40%;
+  }
+}

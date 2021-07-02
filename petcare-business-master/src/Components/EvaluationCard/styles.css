@@ -1,0 +1,104 @@
+.qtyPaws {
+  color: #dabb72 !important;
+}
+
+.evaluation {
+  width: 100%;
+  height: 100%;
+  border-top: 1px solid #ebeced;
+  border-bottom: 1px solid #ebeced;
+  padding: 15px 30px !important;
+  margin-bottom: 10px;
+}
+
+.evaluation .header-information {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.evaluation .header-information .user-content {
+  display: flex;
+  justify-content: left;
+}
+
+.evaluation .header-information .user-content .info-header h1 {
+  font-size: 18px;
+  color: #2D2D2D;
+  margin-bottom: 5px;
+  margin-top: 4px;
+  /* autoprefixer: off */
+  -webkit-box-orient: vertical;
+  display: block;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.evaluation .header-information .user-content .info-header .paws {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+
+.evaluation .header-information .user-content .info-header .paws svg {
+  margin-right: 3px;
+  color: #B3B6CB;
+}
+
+.evaluation .header-information .user-content .info-header .paws span {
+  position: relative;
+  margin-left: 3px;
+  margin-top: 3px;
+  color: #dabb72;
+  font-weight: 600;
+}
+
+.evaluation .header-information .date-evalution {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.evaluation .header-information .date-evalution span {
+  color: #ec910a;
+  font-size: 15px;
+}
+
+.evaluation .content-evalution {
+  padding: 10px 5px;
+}
+
+.evaluation .content-evalution p {
+  /* autoprefixer: off */
+  -webkit-box-orient: vertical;
+  display: block;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #4c5765;
+  overflow: hidden;
+  transition: 0.2s;
+  word-break: break-all 
+}
+
+.evaluation .content-evalution:hover, .evaluation .content-evalution p:hover {
+  -webkit-box-orient: none !important;
+  display: block;
+  -webkit-line-clamp: none !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media only screen and (max-width: 768px) and (min-width: 0px) {
+  .evaluation {
+    padding: 0;
+  }
+}
+
+@media only screen and (max-width: 420px) and (min-width: 0px) {
+  .container-evaluation .container-list-evaluation {
+    padding: 0 20px !important;
+  }
+}

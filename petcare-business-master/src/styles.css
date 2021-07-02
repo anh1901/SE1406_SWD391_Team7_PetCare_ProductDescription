@@ -1,0 +1,106 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,600&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  outline: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #fafafa;
+  font-size: 16px;
+  color: #333;
+  -webkit-font-smoothing: antialiased !important;
+}
+
+button {
+  background: transparent;
+  border: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+.closedSidebar {
+  width: 0px;
+  transition: width .10s;
+}
+
+.container-page-sidebar {
+  margin-left: 375px;
+  transition: margin-left .2s;
+}
+
+.container-page-sidebar-space {
+  margin-left: 65px;
+  transition: margin-left .9s;
+}
+
+/* RESPONSIVE */
+
+@media only screen and (max-width: 768px) and (min-width: 0px) {
+  .closedSidebar {
+    width: 310px;
+    max-width: 310px;
+    transition: width .6s;
+  }
+
+  .container-page-sidebar-space {
+    margin-left: 0;
+    margin-top: 65px;
+  }
+
+  .container-page-sidebar {
+    margin-left: 0;
+    margin-top: 65px;
+  }
+}
+
+
+/* ANIMATION */
+
+.animation {
+  animation-name: heartBeat;
+  animation-duration: 3s; 
+}
+
+@keyframes heartBeat {
+  0% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 0;
+    transition: all ease;
+  }
+
+  14% {
+    -webkit-transform: scale(1.03);
+    transform: scale(1.03);
+    opacity: 0.45;
+    transition: all ease;
+  }
+
+  28% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 0.85;
+    transition: all ease;
+  }
+
+  42% {
+    -webkit-transform: scale(1.03);
+    transform: scale(1.03);
+    opacity: 1;
+    transition: all ease;
+  }
+
+  70% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 1;
+    transition: all ease;
+  }
+}

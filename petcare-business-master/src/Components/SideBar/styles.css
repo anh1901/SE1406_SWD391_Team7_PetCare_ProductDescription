@@ -1,0 +1,184 @@
+.hidedPaws {
+  display: none !important;
+}
+
+.faw-rating {
+  /* color: #7bbb5e !important; */
+  color: #dabb72 !important;
+}
+
+#sidebar-menu-left::-webkit-scrollbar {
+  width: 5px;
+}
+
+#sidebar-menu-left::-webkit-scrollbar-track {
+  background: #1c1b20; 
+}
+
+#sidebar-menu-left::-webkit-scrollbar-thumb {
+  background: #aaaaaa; 
+}
+
+#sidebar-menu-left::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
+
+.sidebar {
+  display: block;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 65px;
+  background: #1c1b20;
+  max-width: 310px;
+  width: 100%;
+  overflow-y: auto;
+  transition: width .8s;
+}
+
+.sidebar .container-sidebar-left {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar .container-sidebar-left .information-company {
+  height: 110px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 15px;
+}
+
+.sidebar .container-sidebar-left .information-company .information-company-area {
+  margin-right: 15px;
+}
+
+.sidebar .container-sidebar-left .information-company .information-company-area img {
+  width: 54px;
+  height: 54px;
+  border-radius: 5px;
+}
+
+.sidebar .container-sidebar-left .information-company .information-company-content {
+  color: #ffffff;
+  width: 100%;
+  height: 100%;
+}
+
+.sidebar .container-sidebar-left .information-company .information-company-content .info-company-title {
+  width: 100%;
+  margin-top: 19px;
+}
+
+.sidebar .container-sidebar-left .information-company .information-company-content .info-company-title h1 {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+  max-width: 200px;
+  overflow: hidden;
+}
+
+.sidebar .container-sidebar-left .information-company .information-company-content .info-company-paws {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+
+.sidebar .container-sidebar-left .information-company .information-company-content .info-company-paws svg {
+  margin-right: 3px;
+}
+
+.sidebar .container-sidebar-left .information-company .information-company-content .info-company-paws span {
+  color: #dabb72;
+  font-size: 18px;
+  margin-left: 5px;
+  margin-top: 3px;
+}
+
+/* Bottom status area */
+.sidebar .container-sidebar-left .bottom-company-status {
+  display: flex;
+  background: #1c1b20;
+  height: 60px;
+  padding: 5px 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar .container-sidebar-left .bottom-company-status .cart-set-status {
+  width: 100%;
+  background: #ec910a;
+  color: #fff;
+  height: 40px;
+  border-radius: 5px;
+  padding: 5px 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.sidebar .container-sidebar-left .bottom-company-status .cart-set-status:hover {
+  transform: translateY(1px);
+}
+
+
+.sidebar .container-sidebar-left .company-list-menu {
+  position: relative;
+}
+
+.sidebar .container-sidebar-left .company-list-menu .transition {
+  display: flex;
+  align-items: center;
+  margin-top: 15px;
+  margin-bottom: 3px;
+}
+
+.sidebar .container-sidebar-left .company-list-menu .transition h1 {
+  margin-left: 8px;
+  font-size: 20px;
+}
+
+.sidebar .container-sidebar-left .company-list-menu .list-area {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar .container-sidebar-left .company-list-menu .list-area a li {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar .container-sidebar-left .company-list-menu .list-area a {
+  text-decoration: none;
+  color: #aaaaaa;
+  padding: 10px 25px;
+  transition: 100ms;
+  margin-bottom: 2px;
+}
+
+.sidebar .container-sidebar-left .company-list-menu .list-area a:hover {
+  background: #333333;
+  color: #fff;
+}
+
+@media only screen and (max-width: 768px) and (min-width: 0px) {
+  .sidebar {
+    width: 0;
+    left: 0;
+    margin-top: 65px;
+    z-index: 9999;
+  }
+
+  .sidebar .container-sidebar-left .company-list-menu {
+    margin-bottom: 25px;
+  }
+}

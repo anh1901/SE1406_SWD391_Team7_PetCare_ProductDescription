@@ -1,0 +1,226 @@
+.hide-buttons-load-more {
+  display: none !important;
+}
+
+.container-request {
+  display: block;
+  justify-content: center;
+  align-items: center;
+  max-width: 920px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 15px;
+  padding-bottom: 25px;
+}
+
+.container-request .request-item {
+  max-width: 920px;
+  width: 100%;
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid #ebeced;
+  margin-top: 25px;
+  margin-bottom: 55px;
+}
+
+.container-request .request-item .header-request {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 10px 10px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  background: #fafafa;
+  border-bottom: 1px solid #ebeced;
+}
+
+.container-request .request-item .header-request .person-information {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.container-request .request-item .header-request .person-information img {
+  background: #fff;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: 1px solid rgba(76, 87, 101, 0.34);
+  margin-right: 10px;
+}
+
+.container-request .request-item .header-request .person-information h3 {
+  font-size: 18px;
+  color: #4c5765;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.container-request .request-item .request-information {
+  width: 100%;
+  padding: 5px 10px;
+}
+
+.container-request .request-item .request-information .header-request-information {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 25px;
+  margin-bottom: 5px;
+}
+
+.container-request .request-item .request-information .header-request-information .number-status .header-request-number, .container-request .request-item .request-information .header-request-information .number-status .status, .container-request .request-item .request-information .header-request-information .number-status .area-info {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.container-request .request-item .request-information .header-request-information .number-status .header-request-number h3, .container-request .request-item .request-information .header-request-information .number-status .status h3, .container-request .request-item .request-information .header-request-information .number-status .area-info h3 {
+  font-size: 17px;
+  color: #ec910a;
+  margin-right: 5px;
+}
+
+.container-request .request-item .request-information .header-request-information .number-status .header-request-number span, .container-request .request-item .request-information .header-request-information .number-status .status span, .container-request .request-item .request-information .header-request-information .number-status .area-info span {
+  font-size: 16px;
+  color: #4c5765;
+}
+
+.container-request .request-item .request-information .header-request-information .realized {
+  display: flex;
+  justify-content: left;
+  margin-top: 10px;
+}
+
+.container-request .request-item .request-information .header-request-information .realized svg {
+  stroke: #ec910a;
+  margin-right: 5px;
+  margin-top: 5px;
+}
+
+.container-request .request-item .request-information .header-request-information .realized span {
+  font-size: 16px;
+  color: #4c5765;
+}
+
+.container-request .request-item .request-information .lists {
+  display: flex;
+  justify-content: center;
+}
+
+.container-request .request-item .request-information .lists .services .list-services {
+  margin-top: 12px;
+  width: 100%;
+  margin: 20px auto 20px;
+  padding: 0 40px;
+  grid-gap: 30px;
+  gap: 30px;
+  grid-column-gap: 65px;
+  column-gap: 65px;
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  margin-bottom: 50px;
+}
+
+.container-request .request-item .request-information .lists .services, .container-request .request-item .request-information .lists .products {
+  width: 50%;
+}
+
+/* PRODUCT */
+
+.container-request .request-item .request-information .lists .products .list-products {
+  margin-top: 12px;
+  width: 100%;
+  margin: 20px auto 20px;
+  padding: 0 40px;
+  grid-gap: 30px;
+  gap: 30px;
+  grid-column-gap: 65px;
+  column-gap: 65px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(298px, 1fr));
+  margin-bottom: 50px;
+}
+
+.container-request .request-item .request-information .title-lists-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 15px auto 0;
+  color: #394458;
+  width: 100%;
+}
+
+.container-request .request-item .request-information .title-lists-header .title-services, .container-request .request-item .request-information .title-lists-header .title-product {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.container-request .request-item .request-information .lists .title-lists {
+   display: none;
+}
+
+@media only screen and (max-width: 1164px) and (min-width: 0px) {
+  .container-request .request-item .request-information .lists {
+    flex-direction: column;
+  }
+
+  .container-request .request-item .request-information .title-lists-header {
+    display: none;
+  }
+
+  .container-request .request-item .request-information .lists .title-lists {
+    display: block;
+    margin-left: 15px;
+    text-align: left;
+    color: #394458;
+  }
+  
+  .container-request .request-item .request-information .lists .firstTitle {
+    margin-top: 10px;
+  }
+
+  .container-request .request-item .request-information .lists .services, .container-request .request-item .request-information .lists .products {
+    width: 100% !important;
+  }
+}
+
+
+@media only screen and (max-width: 506px) and (min-width: 476px) {
+  .product {
+    max-height: 293px;
+  }
+
+  .product .product-infomation .utilities-product-area .actions-product {
+    display: none;
+  }
+
+  .container-request .request-item .request-information .header-request-information {
+    display: block !important;
+  }
+}
+
+@media only screen and (max-width: 475px) and (min-width: 446px) {
+  .container-request .request-item .request-information .header-request-information {
+    display: block !important;
+  }
+
+  .container-request .request-item .request-information .lists .products .list-products {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+}
+
+@media only screen and (max-width: 446px) and (min-width: 0px) {
+  .container-request .request-item .request-information .header-request-information {
+    display: block !important;
+  }
+
+  .container-request .request-item .request-information .lists .products .list-products {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+}

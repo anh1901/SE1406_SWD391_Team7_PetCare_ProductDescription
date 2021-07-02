@@ -1,0 +1,56 @@
+.cantEditArea {
+  opacity: 0.6 !important;
+  cursor: not-allowed !important;
+}
+
+.cantEditButton {
+  cursor: not-allowed !important;
+}
+
+.container-form {
+  max-width: 520px;
+  width: 100%;
+  margin: 30px auto 25px;
+  padding: 0 20px;
+}
+
+/* TITLE */
+
+.container-form .product-info-edit-title {
+  font-size: 20px;
+  color: #2D2D2D;
+}
+
+/* FORM  */
+
+.container-form .product-edit-form {
+  margin-top: 25px;
+}
+
+.container-form .product-edit-form .button-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 45px;
+  margin-top: 15px;
+  border-radius: 5px;
+  background: #ec910a;
+  border: 1px solid #ebeced;
+  transition: opacity 0.2s;
+  cursor: pointer;
+}
+
+.container-form .product-edit-form .button-area button {
+  width: 100%;
+  height: 100%;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #fff;
+  cursor: pointer;
+}
+
+.container-form .product-edit-form .button-area:hover {
+  opacity: 0.9;
+}
