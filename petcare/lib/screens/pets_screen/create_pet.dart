@@ -143,7 +143,7 @@ class _CreatePetScreenState extends State<CreatePetScreen> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
-                        height: SizeFit.screenHeight / 5.5,
+                        height: SizeFit.screenHeight / 5,
                         width: SizeFit.screenWidth,
                         decoration: BoxDecoration(
                             image: DecorationImage(
