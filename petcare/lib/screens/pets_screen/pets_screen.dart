@@ -651,7 +651,7 @@ class _PetsScreenState extends State<PetsScreen> {
                                                       BorderRadius.circular(
                                                           10)),
                                               margin: const EdgeInsets.only(
-                                                  top: 200),
+                                                  top: 150),
                                               child: Column(
                                                 children: <Widget>[
                                                   Row(
