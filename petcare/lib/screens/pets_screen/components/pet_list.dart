@@ -44,7 +44,7 @@ class PetList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: SizeFit.screenHeight / 2.3,
+      height: SizeFit.screenHeight / 2,
       child: FutureBuilder(
         future: getListPet(),
         builder: (context, snapshot) {
