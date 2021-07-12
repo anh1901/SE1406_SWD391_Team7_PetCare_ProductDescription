@@ -231,7 +231,7 @@ class _PetsScreenState extends State<PetsScreen> {
                   ],
                 ),
                 Container(
-                  height: SizeFit.screenHeight / 2.2,
+                  height: SizeFit.screenHeight / 2,
                   child: Padding(
                     padding: const EdgeInsets.only(top: 5),
                     child: FutureBuilder(
