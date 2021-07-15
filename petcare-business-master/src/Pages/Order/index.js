@@ -193,7 +193,7 @@ export default function Order(props) {
           <div className="request-item">
             <div className="header-request">
               <div className="person-information">
-                <h3 className="name-person">{order.userCompleteName === undefined ? ('Loading...') : (order.userCompleteName)}</h3>
+                <h3 className="name-person">{order.userCompleteName === undefined ? ('Nguyen Van A') : (order.userCompleteName)}</h3>
               </div>
               <SelectRequest status={status} onClick={() => handleNextProcess(order.id, status)} />
             </div>
@@ -202,15 +202,19 @@ export default function Order(props) {
                 <div className="number-status">
                   <div className="header-request-number">
                     <h3>Order: </h3>
-                    <span>{'#' + (order.id === undefined ? (' Loading..') : (order.id))}</span>
+                    <span>{'#' + (order.id === undefined ? (' 1') : (order.id))}</span>
                   </div>
                   <div className="area-info">
+                                      <h3>Booked services: </h3>
+                                      <span>Pet Sitting, Grooming.</span>
+                                    </div>
+                  <div className="area-info">
                     <h3>Subtotal: </h3>
-                    <span>{'VND ' + (order.subTotal === undefined ? (' Loading..') : (order.subTotal))}</span>
+                    <span>{'VND ' + (order.subTotal === undefined ? (' 120.000') : (order.subTotal))}</span>
                   </div>
                   <div className="area-info">
                     <h3>Total: </h3>
-                    <span>{'VND ' + (order.total === undefined ? (' Loading..') : (order.total))}</span>
+                    <span>{'VND ' + (order.total === undefined ? ('144.000') : (order.total))}</span>
                   </div>
                   <div className="status">
                     <h3>Status:</h3>

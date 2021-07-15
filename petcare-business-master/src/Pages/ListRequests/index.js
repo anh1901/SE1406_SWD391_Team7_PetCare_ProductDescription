@@ -29,7 +29,7 @@ export default function ListRequests(props) {
               id: '1',
               date: "12-3-2022",
               statusOrder: "PROCESS",
-              userCompleteName:"Anh",
+              userCompleteName:"Anh Ng.",
           },
           {
               id: '2',

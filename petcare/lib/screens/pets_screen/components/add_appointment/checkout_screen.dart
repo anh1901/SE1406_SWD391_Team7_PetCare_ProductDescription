@@ -453,7 +453,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                 ),
               ),
               Container(
-                height: SizeFit.screenHeight * 1 / 2.8,
+                height: SizeFit.screenHeight * 1 / 2.5,
                 decoration: BoxDecoration(color: Colors.white70),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),

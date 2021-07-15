@@ -47,7 +47,7 @@
   "gender": "Gender",
   "addPetButton": "Add pet",
   "selectLocationTitle": "Select your location",
-  "chooseStoreButton": "Choose nearby store",
+  "chooseStoreButton": "Nearby store",
   "nearbyStoreTitle":"Nearby store",
   "noStoreAvailable": "No store found in your area.",
   "confirmStoreButton": "Choose",

@@ -154,25 +154,25 @@ export default function SettingsPage(props) {
             </form>
             <form className="form-content-settings" onSubmit={handleSubmit}>
               <TransitionOfSetting errors={errors} title="Main" description="Information that will be used to show the user;" />
-              <Input type="text" value={company.cnpj} onChange={e => setCompany({ ...company, cnpj: e.target.value })} placeholder="CNPJ" messageBottom="This CPNJ is which the company has been registered., but it cannot be changed" autoComplete="off" disabled={true} />
-              <Input type="text" value={company.companyName} placeholder="Company Name" onChange={e => setCompany({ ...company, companyName: e.target.value })} messageBottom="This name will be visible to users who access the company page" autoComplete="off" />
+              <Input type="text" value="AQQF1311CD223" onChange={e => setCompany({ ...company, cnpj: e.target.value })} placeholder="CNPJ" messageBottom="This CPNJ is which the company has been registered., but it cannot be changed" autoComplete="off" disabled={true} />
+              <Input type="text" value="Demo company" placeholder="Company Name" onChange={e => setCompany({ ...company, companyName: e.target.value })} messageBottom="This name will be visible to users who access the company page" autoComplete="off" />
               <div className="text-area-area">
-                <TextArea value={company.description} placeholder="Description" onChange={e => setCompany({ ...company, description: e.target.value })} />
+                <TextArea value="Good company for pet" placeholder="Description" onChange={e => setCompany({ ...company, description: e.target.value })} />
               </div>
-              <Input type="text" value={company.address.street} placeholder="Address" onChange={e => setCompany({ ...company, address: { ...company.address, street: e.target.value } })} messageBottom="Address where the company was registered" autoComplete="off" />
-              <Input type="number" value={company.address.placeNumber} placeholder="Number" onChange={e => setCompany({ ...company, address: { ...company.address, placeNumber: e.target.value } })} messageBottom="Property number" autoComplete="off" max="20000" />
-              <Input type="text" value={company.address.complement} placeholder="Complement" onChange={e => setCompany({ ...company, address: { ...company.address, complement: e.target.value } })} messageBottom="Property complement" autoComplete="off" />
-              <Input type="text" value={company.address.neighborhood} placeholder="Neighborhood" onChange={e => setCompany({ ...company, address: { ...company.address, neighborhood: e.target.value } })} autoComplete="off" />
-              <Input type="text" value={company.address.cep} placeholder="ZIP" onChange={e => setCompany({ ...company, address: { ...company.address, cep: e.target.value } })} autoComplete="off" />
+              <Input type="text" value="13/2 Le Loi St." placeholder="Address" onChange={e => setCompany({ ...company, address: { ...company.address, street: e.target.value } })} messageBottom="Address where the company was registered" autoComplete="off" />
+              <Input type="number" value="0903364528" placeholder="Number" onChange={e => setCompany({ ...company, address: { ...company.address, placeNumber: e.target.value } })} messageBottom="Property number" autoComplete="off" max="20000" />
+              <Input type="text" value="Anh" placeholder="Complement" onChange={e => setCompany({ ...company, address: { ...company.address, complement: e.target.value } })} messageBottom="Property complement" autoComplete="off" />
+              <Input type="text" value="Go Vap" placeholder="Neighborhood" onChange={e => setCompany({ ...company, address: { ...company.address, neighborhood: e.target.value } })} autoComplete="off" />
+              <Input type="text" value="70000" placeholder="ZIP" onChange={e => setCompany({ ...company, address: { ...company.address, cep: e.target.value } })} autoComplete="off" />
               <div className="city-states">
                 <div className="city-input inputed">
-                  <input type="text" value={company.address.city} placeholder="City" onChange={e => setCompany({ ...company, address: { ...company.address, city: e.target.value } })} />
+                  <input type="text" value="TP.HCM" placeholder="City" onChange={e => setCompany({ ...company, address: { ...company.address, city: e.target.value } })} />
                 </div>
                 <div className="states inputed">
-                  <input type="text" value={company.address.state} placeholder="State" onChange={e => setCompany({ ...company, address: { ...company.address, state: e.target.value } })} />
+                  <input type="text" value="Viet Nam" placeholder="State" onChange={e => setCompany({ ...company, address: { ...company.address, state: e.target.value } })} />
                 </div>
               </div>
-              <ButtonForm text="Change company data" />
+              <ButtonForm text="Change company info" />
               <div className="bottom-border-settings" />
             </form>
           </div>

@@ -86,7 +86,7 @@ export default function ListServices(props) {
         <div className="container-service">
           <SearchBox searchMethod={(e) => searchInList(e, "input-search-search-box", "container-list-services", "service-card", "title-service")} placeholder="Search for to service" />
           <div className="buttons-service">
-            <a href="/registrar-servico" className="signup-product">
+            <a href="/register-service" className="signup-product">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="2" strokeLinecap="square" strokeLinejoin="arcs"><line x1 ="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line ></svg>
               <span>Register</span>
             </a>

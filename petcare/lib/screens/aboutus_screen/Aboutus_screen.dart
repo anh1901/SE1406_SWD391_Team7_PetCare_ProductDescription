@@ -17,10 +17,13 @@ class AboutUsScreen extends StatelessWidget {
         ),
         backgroundColor: Colors.lightBlueAccent,
       ),
-      body: Center(
-        child: Text(
-          'lorem ipsum dolor sit amet lorem ipsum dolor',
-          style: TextStyle(fontSize: 24.0),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          child: Text(
+            'This app is made by 3 inexperience students who just know coding flutter.\nIf there are any error, please tell us.',
+            style: TextStyle(fontSize: 24.0),
+          ),
         ),
       ),
     );
