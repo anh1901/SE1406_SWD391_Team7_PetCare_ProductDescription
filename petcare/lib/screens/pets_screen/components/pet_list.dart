@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image/network.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:petcare/models/pet_model.dart';
 import 'package:petcare/screens/basic_screen/basic_screen.dart';
@@ -119,8 +120,8 @@ class PetList extends StatelessWidget {
                                         ),
                                         Icon(
                                           snapshot.data[index]["sex"] == "Male"
-                                              ? Icons.male
-                                              : Icons.female,
+                                              ? FontAwesomeIcons.mars
+                                              : FontAwesomeIcons.venus,
                                           color: snapshot.data[index]["sex"] ==
                                                   "Male"
                                               ? Colors.lightBlueAccent

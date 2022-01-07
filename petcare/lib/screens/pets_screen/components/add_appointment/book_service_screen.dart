@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_image/network.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:petcare/models/pet_model.dart';
@@ -310,8 +311,8 @@ class _BookServiceScreenState extends State<BookServiceScreen> {
                                       Icon(
                                         snapshot.data[_selectedIndex]["sex"] ==
                                                 "Male"
-                                            ? Icons.male
-                                            : Icons.female,
+                                            ? FontAwesomeIcons.mars
+                                            : FontAwesomeIcons.venus,
                                         color: snapshot.data[_selectedIndex]
                                                     ["sex"] ==
                                                 "Male"
@@ -721,8 +722,10 @@ class _BookServiceScreenState extends State<BookServiceScreen> {
                                                         snapshot.data[0]
                                                                     ["sex"] ==
                                                                 "Male"
-                                                            ? Icons.male
-                                                            : Icons.female,
+                                                            ? FontAwesomeIcons
+                                                                .mars
+                                                            : FontAwesomeIcons
+                                                                .venus,
                                                         color: snapshot.data[
                                                                         index]
                                                                     ["sex"] ==
